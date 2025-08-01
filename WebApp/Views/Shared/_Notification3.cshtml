@@ -1,0 +1,75 @@
+﻿<link rel="stylesheet" href="~/css/notification3.css" asp-append-version="true" />
+<div id="notification" class="notification" aria-live="assertive" style="display: none;">
+    <div class="notification-content">
+        <span id="notification-message" class="notification-text"></span>
+        <button type="button" onclick="hideNotification()" class="notification-close" aria-label="Закрыть уведомление">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    let notificationTimeout;
+    let isNotificationShowing = false;
+
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const messageElement = document.getElementById('notification-message');
+
+        if (!notification || !messageElement) return;
+
+        // Если уведомление уже показано, сначала скрываем его
+        if (isNotificationShowing) {
+            hideNotification(true);
+            setTimeout(() => showNotification(message, type), 300);
+            return;
+        }
+
+        // Сбрасываем предыдущий таймер
+        clearTimeout(notificationTimeout);
+
+        // Устанавливаем тип и сообщение
+        notification.className = 'notification';
+        notification.classList.add(`notification-${type}`);
+        messageElement.textContent = message;
+        notification.style.display = 'flex';
+        isNotificationShowing = true;
+
+        // Автоскрытие через 5 секунд
+        notificationTimeout = setTimeout(() => {
+            hideNotification();
+        }, 5000);
+    }
+
+    function hideNotification(immediate = false) {
+        const notification = document.getElementById('notification');
+        if (!notification || !isNotificationShowing) return;
+
+        clearTimeout(notificationTimeout);
+
+        if (immediate) {
+            notification.style.display = 'none';
+            isNotificationShowing = false;
+            return;
+        }
+
+        notification.classList.add('hide');
+
+        notification.addEventListener('animationend', function handler() {
+            notification.style.display = 'none';
+            notification.classList.remove('hide');
+            notification.removeEventListener('animationend', handler);
+            isNotificationShowing = false;
+        }, { once: true });
+    }
+
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+    @if (TempData["ToastMessage"] != null)
+    {
+        @:setTimeout(() => showNotification('@Html.Raw(TempData["ToastMessage"])', '@TempData["ToastType"]' || 'success'), 300);
+    }
+    });
+</script>

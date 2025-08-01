@@ -1,0 +1,15 @@
+﻿@using WebApp.Models.View
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+@section Style {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true"/>
+}
+@section _AsideLeft {
+    @await Html.PartialAsync("_Login", Model ?? new LoginViewModel())
+}
+<div class="text-center">
+   <h2>Hello world!</h2>
+
+</div>

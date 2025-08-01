@@ -1,0 +1,49 @@
+﻿<!-- Поместите перед закрывающим </body> -->
+<div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <strong class="me-auto">Уведомление</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toast-message"></div>
+</div>
+
+<script>
+    // Функция для декодирования HTML-сущностей
+    function decodeHtmlEntities(text) {
+        const textArea = document.createElement('textarea');
+        textArea.innerHTML = text;
+        return textArea.value;
+    }
+
+    function showToast(message, type = 'success') {
+        const toastEl = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Сбрасываем классы
+        toastEl.className = 'toast';
+
+        // Добавляем классы в зависимости от типа
+        const bgClass = type === 'success' ? 'bg-success' : 'bg-danger';
+        toastEl.classList.add(bgClass, 'text-white');
+
+        // Декодируем и устанавливаем сообщение
+        toastMessage.textContent = decodeHtmlEntities(message);
+
+        // Инициализируем и показываем тост
+        const toast = new bootstrap.Toast(toastEl, {
+            autohide: true,
+            delay: 5000
+        });
+        toast.show();
+    }
+
+    // Автопоказ при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+    @if (TempData["ToastMessage"] != null)
+    {
+        @:const message = '@Html.Raw(TempData["ToastMessage"])';
+        @:const type = '@TempData["ToastType"]' || 'success';
+        @:showToast(message, type);
+    }
+    });
+</script>

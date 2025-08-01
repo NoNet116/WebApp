@@ -1,0 +1,38 @@
+﻿.login-panel {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.9em;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background: #4b6cb7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.auth-links {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}

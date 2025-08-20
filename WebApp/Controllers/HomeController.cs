@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
@@ -43,7 +43,7 @@ namespace WebApp.Controllers
             return View();
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Index(LoginViewModel model)
         {
@@ -70,6 +70,61 @@ namespace WebApp.Controllers
             }
 
             return View(model);
+        }
+*/
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var client = _httpClientFactory.CreateClient();
+            var payload = new { email = model.Email, password = model.Password };
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"{ApiUrl}/api/auth/login", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Прочитаем данные пользователя из ответа API (если API возвращает JSON с информацией)
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var userData = JsonSerializer.Deserialize<UserInfoDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                // Создаем claims для cookie-аутентификации
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, userData?.Email ?? model.Email),
+            //new Claim("UserId", userData?.Id.ToString() ?? "")
+            // Добавь другие claim-ы, если нужно
+        };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true, // "Запомнить меня"
+                        ExpiresUtc = DateTime.UtcNow.AddHours(1)
+                    });
+
+                TempData["ToastMessage"] = "Успешный вход!";
+                TempData["ToastType"] = "success";
+
+                ViewBag.Url = $"{ApiUrl}/api/Users/me";
+                TempData["url"] = $"{ApiUrl}/api/Users/me";
+                return RedirectToAction("Index", "Home"); // После входа редирект на главную
+            }
+            else
+            {
+                TempData["ToastMessage"] = $"Ошибка: {response.StatusCode}";
+                TempData["ToastType"] = "error";
+                return View(model);
+            }
         }
 
         [HttpPost]

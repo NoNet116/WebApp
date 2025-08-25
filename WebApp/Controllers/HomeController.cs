@@ -1,14 +1,15 @@
-using System.Diagnostics;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using WebApp.Models;
 using WebApp.Models.View;
 using WebApp.Models.View.User;
+using WebApp.Services;
 
 /* Напоминалка 
             ModelState.AddModelError("", "Получено сообщение");
@@ -22,175 +23,139 @@ namespace WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration;
-        private string  ApiUrl = null!; 
+        private readonly ApiService _apiService;
 
         public HomeController(ILogger<HomeController> logger,
                               IHttpClientFactory httpClientFactory,
-                              IConfiguration configuration)
+                              ApiService apiService)
         {
             _logger = logger;
             _httpClientFactory = httpClientFactory;
-            _configuration = configuration;
-          var  apiUrl = string.IsNullOrWhiteSpace(_configuration["API:url"])
-            ? throw new ArgumentNullException("API:url не задана"): _configuration["API:url"]; // Получаем URL из конфига
-            ApiUrl = apiUrl;
+            _apiService = apiService;
         }
 
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        /*[HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Index(LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var client = _httpClientFactory.CreateClient();
-            var payload = new { email = model.Email, password = model.Password };
-            var json = JsonSerializer.Serialize(payload);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync($"{ApiUrl}/api/auth/login", content);
-
-            if (response.IsSuccessStatusCode)
+            var user = await _apiService.GetAsync<UserInfoDto>("/api/Users/me");
+            
+            if (user != null)
             {
-                TempData["ToastMessage"] = "Успешный вход!";
-                TempData["ToastType"] = "success";
-
-            }
-            else
-            {
-                TempData["ToastMessage"] = $"Ошибка: {response.StatusCode}";
-                TempData["ToastType"] = "error";
-            }
-
-            return View(model);
-        }
-*/
-        [HttpGet]
-        public async Task<IActionResult> Me()
-        {
-            var client = _httpClientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}/api/Users/me");
-
-            // Переносим куку в запрос к API
-            var cookie = HttpContext.Request.Headers["Cookie"].ToString();
-            if (!string.IsNullOrEmpty(cookie))
-            {
-                request.Headers.Add("Cookie", cookie);
-            }
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                var user = JsonSerializer.Deserialize<UserInfoDto>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
                 var userview = new UserViewModel()
                 {
                     Id = user.Id,
                     Role = user.Role,
                     Email = user.Email
                 };
-                return View("Main", userview); // Отобразим данные на странице Me.cshtml
+                return View("Main", userview);
             }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+
+            return View();
+        }
+               
+       
+        [HttpGet]
+        public async Task<IActionResult> Me()
+        {
+            var user = await _apiService.GetAsync<UserInfoDto>("/api/Users/me");
+
+            if (user == null)
             {
-                TempData["ToastMessage"] = "Сессия истекла, выполните вход снова.";
+                TempData["ToastMessage"] = "Сессия истекла или пользователь не найден.";
                 TempData["ToastType"] = "warning";
                 return RedirectToAction("Index", "Home");
             }
-
-            TempData["ToastMessage"] = $"Ошибка: {response.StatusCode}";
-            TempData["ToastType"] = "error";
-            return RedirectToAction("Index", "Home");
+            var userview = new UserViewModel()
+            {
+                Id = user.Id,
+                Role = user.Role,
+                Email = user.Email
+            };
+            return View("Main", userview);  // например, View(Me.cshtml)
         }
 
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Index(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var client = _httpClientFactory.CreateClient();
-            var payload = new { email = model.Email, password = model.Password };
-            var json = JsonSerializer.Serialize(payload);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync($"{ApiUrl}/api/auth/login", content);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                // Прочитаем данные пользователя из ответа API (если API возвращает JSON с информацией)
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var userData = JsonSerializer.Deserialize<UserInfoDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (!ModelState.IsValid)
+                    return View(model);
 
-                // Создаем claims для cookie-аутентификации
-                var claims = new List<Claim>
+                // Отправляем запрос на логин через общий сервис
+                var userData = await _apiService.PostAsync<UserInfoDto>(
+                    "/api/auth/login",
+                    new { email = model.Email, password = model.Password }
+                );
+
+                if (userData != null)
+                {
+                    // Создаем claims для cookie-аутентификации
+                    var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, userData?.Email ?? model.Email),
-            //new Claim("UserId", userData?.Id.ToString() ?? "")
-            // Добавь другие claim-ы, если нужно
+            new Claim(ClaimTypes.Name, userData.Email ?? model.Email)
+            // можно добавить ID, роли и т.д.
         };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    new AuthenticationProperties
-                    {
-                        IsPersistent = true, // "Запомнить меня"
-                        ExpiresUtc = DateTime.UtcNow.AddHours(1)
-                    });
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTime.UtcNow.AddHours(1)
+                        });
 
-                TempData["ToastMessage"] = "Успешный вход!";
-                TempData["ToastType"] = "success";
+                    TempData["ToastMessage"] = "Успешный вход!";
+                    TempData["ToastType"] = "success";
 
-                ViewBag.Url = $"{ApiUrl}/api/Users/me";
-                TempData["url"] = $"{ApiUrl}/api/Users/me";
-                return RedirectToAction("Me", "Home"); // После входа редирект на главную
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Если ошибка
+                TempData["ToastMessage"] = "Неверный логин или пароль.";
+                TempData["ToastType"] = "error";
+                return View(model);
             }
-            else
+            catch (Exception ex)
             {
-                TempData["ToastMessage"] = $"Ошибка: {response.StatusCode}";
+                TempData["ToastMessage"] = ex.Message;
                 TempData["ToastType"] = "error";
                 return View(model);
             }
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsync($"{ApiUrl}/api/auth/logout", null);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
+                // Вызываем API logout через общий сервис
+                var result = await _apiService.PostAsync<object>("/api/auth/logout", null);
+
                 TempData["ToastMessage"] = "Вы успешно вышли из системы";
                 TempData["ToastType"] = "success";
             }
-            else
+            catch
             {
-                TempData["ToastMessage"] = "Ошибка при выходе";
+                // Если API недоступно или вернуло ошибку
+                TempData["ToastMessage"] = "Ошибка при выходе из системы";
                 TempData["ToastType"] = "error";
             }
 
+            // Очищаем локальные данные
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

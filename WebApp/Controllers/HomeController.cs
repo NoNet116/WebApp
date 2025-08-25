@@ -22,15 +22,12 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ApiService _apiService;
 
         public HomeController(ILogger<HomeController> logger,
-                              IHttpClientFactory httpClientFactory,
                               ApiService apiService)
         {
             _logger = logger;
-            _httpClientFactory = httpClientFactory;
             _apiService = apiService;
         }
 
@@ -38,17 +35,25 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var user = await _apiService.GetAsync<UserInfoDto>("/api/Users/me");
-            
-            if (user != null)
+            try
             {
-                var userview = new UserViewModel()
+                var user = await _apiService.GetAsync<UserInfoDto>("/api/Users/me");
+
+                if (user != null)
                 {
-                    Id = user.Id,
-                    Role = user.Role,
-                    Email = user.Email
-                };
-                return View("Main", userview);
+                    var userview = new UserViewModel()
+                    {
+                        Id = user.Id,
+                        Role = user.Role,
+                        Email = user.Email
+                    };
+                    return View("Main", userview);
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ToastMessage"] = ex.Message;
+                TempData["ToastType"] = "error";
             }
 
             return View();
@@ -94,10 +99,10 @@ namespace WebApp.Controllers
                 {
                     // Создаем claims для cookie-аутентификации
                     var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, userData.Email ?? model.Email)
-            // можно добавить ID, роли и т.д.
-        };
+                    {
+                        new Claim(ClaimTypes.Name, userData.Email ?? model.Email)
+                        // можно добавить ID, роли и т.д.
+                    };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -125,6 +130,8 @@ namespace WebApp.Controllers
             {
                 TempData["ToastMessage"] = ex.Message;
                 TempData["ToastType"] = "error";
+
+                ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
         }

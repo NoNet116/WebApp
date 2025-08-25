@@ -30,8 +30,13 @@ public class ApiService
             request.Headers.Add("Cookie", cookie);
 
         var response = await client.SendAsync(request);
+        var responseContent = await response.Content.ReadAsStringAsync();
+
         if (!response.IsSuccessStatusCode)
-            return default;
+            throw new HttpRequestException(
+                $"API StatusCode: {response.StatusCode}. " +
+                $"Ответ сервера: {responseContent}"
+            );
 
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions

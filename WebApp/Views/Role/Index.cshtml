@@ -1,0 +1,66 @@
+﻿@using WebApp.Models.View.Role
+@model RoleViewModel
+
+@if (Model?.Roles != null && Model.Roles.Any())
+{
+    <table class="role-table">
+        <thead>
+            <tr>
+                <th colspan="2" class="table-title">Роли</th>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model.Roles)
+            {
+                <tr>
+                    <td>@role.Id</td>
+                    <td>@role.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Нет данных о ролях.</p>
+}
+
+<style>
+    .table-title {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        background-color: #eaeaea;
+        padding: 12px;
+    }
+
+    .role-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        font-family: Arial, sans-serif;
+    }
+
+        .role-table th, .role-table td {
+            border: 1px solid #ddd;
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        .role-table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .role-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .role-table tr:hover {
+            background-color: #f1f1f1;
+        }
+</style>

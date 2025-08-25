@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Models.View;
+using WebApp.Models.View.User;
 
 /* Напоминалка 
             ModelState.AddModelError("", "Получено сообщение");
@@ -72,6 +73,47 @@ namespace WebApp.Controllers
             return View(model);
         }
 */
+        [HttpGet]
+        public async Task<IActionResult> Me()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}/api/Users/me");
+
+            // Переносим куку в запрос к API
+            var cookie = HttpContext.Request.Headers["Cookie"].ToString();
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var user = JsonSerializer.Deserialize<UserInfoDto>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                var userview = new UserViewModel()
+                {
+                    Id = user.Id,
+                    Role = user.Role,
+                    Email = user.Email
+                };
+                return View("Main", userview); // Отобразим данные на странице Me.cshtml
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                TempData["ToastMessage"] = "Сессия истекла, выполните вход снова.";
+                TempData["ToastType"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData["ToastMessage"] = $"Ошибка: {response.StatusCode}";
+            TempData["ToastType"] = "error";
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -117,7 +159,7 @@ namespace WebApp.Controllers
 
                 ViewBag.Url = $"{ApiUrl}/api/Users/me";
                 TempData["url"] = $"{ApiUrl}/api/Users/me";
-                return RedirectToAction("Index", "Home"); // После входа редирект на главную
+                return RedirectToAction("Me", "Home"); // После входа редирект на главную
             }
             else
             {

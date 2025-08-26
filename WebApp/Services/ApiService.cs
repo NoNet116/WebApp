@@ -76,6 +76,67 @@ public class ApiService
             });
     }
 
+    public async Task<T?> PutAsync<T>(string endpoint, object? payload)
+    {
+        var client = _httpClientFactory.CreateClient();
+        HttpContent? content = null;
+
+        if (payload != null)
+        {
+            var json = JsonSerializer.Serialize(payload);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+        }
+
+        var request = new HttpRequestMessage(HttpMethod.Put, $"{_apiUrl}{endpoint}")
+        {
+            Content = content
+        };
+
+        // Добавляем куку из текущего запроса
+        var cookie = _httpContextAccessor.HttpContext?.Request.Headers["Cookie"].ToString();
+        if (!string.IsNullOrEmpty(cookie))
+            request.Headers.Add("Cookie", cookie);
+
+        var response = await client.SendAsync(request);
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+            throw new HttpRequestException(
+                $"API StatusCode: {response.StatusCode}. " +
+                $"Ответ сервера: {responseContent}"
+            );
+
+        return string.IsNullOrWhiteSpace(responseContent)
+            ? default
+            : JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+    }
+
+    public async Task<bool> DeleteAsync(string endpoint)
+    {
+        var client = _httpClientFactory.CreateClient();
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"{_apiUrl}{endpoint}");
+
+        // Добавляем куку из текущего запроса
+        var cookie = _httpContextAccessor.HttpContext?.Request.Headers["Cookie"].ToString();
+        if (!string.IsNullOrEmpty(cookie))
+            request.Headers.Add("Cookie", cookie);
+
+        var response = await client.SendAsync(request);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            throw new HttpRequestException(
+                $"API StatusCode: {response.StatusCode}. " +
+                $"Ответ сервера: {responseContent}"
+            );
+        }
+
+        return true;
+    }
 
 
 }

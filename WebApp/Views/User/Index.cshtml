@@ -31,23 +31,29 @@
                 <td>FatherName</td>
                 <td>BirthDate</td>
                 <td>Role</td>
+                <td>Change</td>
+                <td>Delete</td>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in Model.Items)
             {
-                <tr>
+                <tr data-id="@user.Id">
                     <td>@user.Id</td>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    <td>@user.FatherName</td>
-                    <td>@user.BirthDate</td>
-                    <td>@user.Role</td>
+                    <td class="editable" data-field="UserName">@user.UserName</td>
+                    <td class="editable" data-field="Email">@user.Email</td>
+                    <td class="editable" data-field="FirstName">@user.FirstName</td>
+                    <td class="editable" data-field="LastName">@user.LastName</td>
+                    <td class="editable" data-field="FatherName">@user.FatherName</td>
+                    <td class="editable" data-field="BirthDate">@user.BirthDate.ToString("yyyy-MM-dd")</td>
+                    <td class="editable" data-field="Role">@user.Role</td>
+                    <td>
+                        <button class="btn-save" style="display:none;">Сохранить</button>
+                    </td>
                 </tr>
             }
         </tbody>
+
     </table>
 
     <!-- Пагинация -->
@@ -76,9 +82,74 @@ else
         document.getElementById('pageInput').value = 1;
         document.getElementById('pageSizeForm').submit();
     }
+
+        document.querySelectorAll('.user-table tbody tr').forEach(row => {
+        const saveBtn = row.querySelector('.btn-save');
+        const originalData = {};
+
+        row.querySelectorAll('.editable').forEach(td => {
+            originalData[td.dataset.field] = td.innerText;
+
+            td.addEventListener('click', () => {
+                const field = td.dataset.field;
+                const currentValue = td.innerText;
+                td.innerHTML = `<input type="text" value="${currentValue}" />`;
+                const input = td.querySelector('input');
+                input.focus();
+
+                input.addEventListener('blur', () => {
+                    td.innerText = input.value;
+                    // Показываем кнопку сохранения если значение изменилось
+                    if (input.value !== originalData[field]) {
+                        saveBtn.style.display = 'inline-block';
+                    }
+                });
+            });
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            const userId = row.dataset.id;
+            const updatedData = {};
+            row.querySelectorAll('.editable').forEach(td => {
+                updatedData[td.dataset.field] = td.innerText;
+            });
+
+            try {
+                const response = await fetch(`/User/Edit/${userId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (response.ok) {
+                    alert('Пользователь успешно обновлён');
+                    saveBtn.style.display = 'none';
+                } else {
+                    const err = await response.text();
+                    alert('Ошибка: ' + err);
+                }
+            } catch (err) {
+                alert('Ошибка: ' + err);
+            }
+        });
+    });
+
+
 </script>
 
 <style>
+    .btn-save {
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background-color: #218838;
+        }
     /* Форма выбора количества элементов */
     form#pageSizeForm {
         margin-bottom: 16px;

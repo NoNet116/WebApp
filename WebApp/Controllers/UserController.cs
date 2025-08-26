@@ -48,6 +48,51 @@ namespace WebApp.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(Guid id, [FromBody] Dictionary<string, string> updatedData)
+        {
+            try
+            {
+                // Получаем пользователя
+                var user = await _apiService.GetAsync<UserViewModel>($"/api/Users/{id.ToString()}");
+                if (user == null)
+                {
+                    TempData["ToastMessage"] = "Пользователь не найден";
+                    TempData["ToastType"] = "error";
+                    return NotFound(new { message = "Пользователь не найден" });
+                }
+
+                // Обновляем свойства
+                foreach (var kvp in updatedData)
+                {
+                    var prop = typeof(UserViewModel).GetProperty(kvp.Key);
+                    if (prop != null)
+                    {
+                        if (prop.PropertyType == typeof(DateOnly))
+                        {
+                            prop.SetValue(user, DateOnly.Parse(kvp.Value));
+                        }
+                        else
+                        {
+                            prop.SetValue(user, kvp.Value);
+                        }
+                    }
+                }
+
+                // Сохраняем изменения через API
+              var res =   await _apiService.PutAsync<UserViewModel>($"/api/Users/{id}", user);
+
+                return Ok(new { message = "Пользователь успешно обновлён" });
+            }
+            catch (Exception ex)
+            {
+                // Можно логировать ex
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
 
     }
+
+
 }

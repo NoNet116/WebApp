@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 using WebApp.Models;
 using WebApp.Models.View;
 using WebApp.Models.View.User;
@@ -19,6 +17,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -31,13 +30,13 @@ namespace WebApp.Controllers
             _apiService = apiService;
         }
 
-
+        #region index & Logout
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var user = await _apiService.GetAsync<UserInfoDto>("/api/Users/me");
+                var user = await _apiService.GetAsync<UserDto>("/api/Users/me");
 
                 if (user != null)
                 {
@@ -58,27 +57,6 @@ namespace WebApp.Controllers
 
             return View();
         }
-               
-       
-        [HttpGet]
-        public async Task<IActionResult> Me()
-        {
-            var user = await _apiService.GetAsync<UserInfoDto>("/api/Users/me");
-
-            if (user == null)
-            {
-                TempData["ToastMessage"] = "Сессия истекла или пользователь не найден.";
-                TempData["ToastType"] = "warning";
-                return RedirectToAction("Index", "Home");
-            }
-            var userview = new UserViewModel()
-            {
-                Id = user.Id,
-                Role = user.Role,
-                Email = user.Email
-            };
-            return View("Main", userview);  // например, View(Me.cshtml)
-        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -90,7 +68,7 @@ namespace WebApp.Controllers
                     return View(model);
 
                 // Отправляем запрос на логин через общий сервис
-                var userData = await _apiService.PostAsync<UserInfoDto>(
+                var userData = await _apiService.PostAsync<UserDto>(
                     "/api/auth/login",
                     new { email = model.Email, password = model.Password }
                 );
@@ -136,7 +114,6 @@ namespace WebApp.Controllers
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -163,11 +140,96 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        #endregion
+
+        [HttpGet]
+        public async Task<IActionResult> Me()
+        {
+            var user = await _apiService.GetAsync<UserDto>("/api/Users/me");
+
+            if (user == null)
+            {
+                TempData["ToastMessage"] = "Сессия истекла или пользователь не найден.";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index", "Home");
+            }
+            var userview = new UserViewModel()
+            {
+                Id = user.Id,
+                Role = user.Role,
+                Email = user.Email
+            };
+            return View("Main", userview);  // например, View(Me.cshtml)
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region Регистрация пользователя
+        [HttpGet]
+        public IActionResult Register()
+        {
+            var model = new UserRegisterViewModel
+            {
+                BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-18)),
+                LastName = "Иванов",
+                FirstName = "Иван",
+                FatherName = "Иванович",
+                UserName = "Ivanovi4",
+                Email = "i@example.com"
+
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserRegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            try
+            {
+                var result = await _apiService.PostAsync<UserRegisterViewModel>(
+                    "/api/Users/Create",
+                    new
+                    {
+                        email = model.Email,
+                        password = model.Password,
+                        username = model.UserName,
+                        lastname = model.LastName,
+                        firstname = model.FirstName,
+                        birthdate = model.BirthDate,
+                        fathername = model.FatherName
+                    }
+                );
+
+                ModelState.Clear();//Очищаем форму
+
+                TempData["ToastMessage"] = "Пользователь создан";
+                TempData["ToastType"] = "success";
+
+                var newmodel = new UserRegisterViewModel
+                {
+                    BirthDate = DateOnly.FromDateTime(DateTime.Today.AddYears(-18))
+                };
+
+                return View(newmodel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ToastMessage"] = ex.Message;
+                TempData["ToastType"] = "error";
+
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View(model);
+        }
+        #endregion
     }
 }

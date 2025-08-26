@@ -1,6 +1,6 @@
 ﻿namespace WebApp.Models
 {
-    public class UserInfoDto
+    public class UserDto
     {
         public string Id { get; set; }
         public string Email { get; set; }

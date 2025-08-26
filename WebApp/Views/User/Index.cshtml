@@ -1,0 +1,186 @@
+﻿@using WebApp.Models.View.User
+@model PagedResult<UserViewModel>
+@{
+    var pageSizes = new[] { 20, 50, 100 };
+}
+<div>
+    <form method="get" asp-action="Index" id="pageSizeForm">
+        <label for="pageSize">Показать:</label>
+        @Html.DropDownListFor(
+        m => m.PageSize,
+                new SelectList(pageSizes, Model.PageSize),
+                new { id = "pageSize", onchange = "resetPageAndSubmit()" }
+                )
+        <input type="hidden" name="page" id="pageInput" value="@Model.PageNumber" />
+    </form>
+</div>
+
+@if (Model.Items.Any())
+{
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th colspan="8" class="table-title">Пользователи</th>
+            </tr>
+            <tr>
+                <td>Id</td>
+                <td>UserName</td>
+                <td>Email</td>
+                <td>FirstName</td>
+                <td>LastName</td>
+                <td>FatherName</td>
+                <td>BirthDate</td>
+                <td>Role</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Items)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.FatherName</td>
+                    <td>@user.BirthDate</td>
+                    <td>@user.Role</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            if (i == Model.PageNumber)
+            {
+                <span class="current">@i</span>
+            }
+            else
+            {
+                <a href="@Url.Action("Index", new { page = i, pageSize = Model.PageSize })">@i</a>
+            }
+        }
+    </div>
+}
+else
+{
+    <p>Нет данных для отображения.</p>
+}
+
+<script>
+    function resetPageAndSubmit() {
+        // При смене размера страницы сбрасываем номер страницы на 1
+        document.getElementById('pageInput').value = 1;
+        document.getElementById('pageSizeForm').submit();
+    }
+</script>
+
+<style>
+    /* Форма выбора количества элементов */
+    form#pageSizeForm {
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: Arial, sans-serif;
+        font-size: 0.95rem;
+    }
+
+        form#pageSizeForm label {
+            font-weight: bold;
+        }
+
+        form#pageSizeForm select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+            form#pageSizeForm select:hover {
+                border-color: #007bff;
+            }
+
+    /* Таблица пользователей */
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-family: Arial, sans-serif;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+        .user-table th, .user-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .user-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .user-table tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .user-table tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+    .table-title {
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: bold;
+        background-color: #eaeaea;
+        padding: 12px;
+        border-bottom: 2px solid #ccc;
+    }
+
+    /* Пагинация */
+    .pagination {
+        margin-top: 16px;
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+    }
+
+        .pagination a, .pagination span {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            text-decoration: none;
+            color: #333;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+            .pagination a:hover {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+        .pagination .current {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+    /* Отступ для пустого состояния */
+    p {
+        margin-top: 12px;
+        font-style: italic;
+        color: #555;
+    }
+</style>

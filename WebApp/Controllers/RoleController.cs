@@ -6,9 +6,9 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class RoleController(ILogger<HomeController> logger, ApiService apiService) : Controller
+    public class RoleController(ILogger<RoleController> logger, ApiService apiService) : Controller
     {
-        private readonly ILogger<HomeController> _logger = logger;
+        private readonly ILogger<RoleController> _logger = logger;
         private readonly ApiService _apiService = apiService;
 
         public async Task<IActionResult> Index()

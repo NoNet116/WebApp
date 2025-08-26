@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Models.View.User;
 using WebApp.Services;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class UserController(ILogger<UserController> logger, ApiService apiService) : Controller
     {
         private readonly ILogger<UserController> _logger = logger;

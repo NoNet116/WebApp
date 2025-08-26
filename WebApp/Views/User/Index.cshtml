@@ -16,7 +16,7 @@
 </div>
 
 @if (Model.Items.Any())
-{
+{   <div class="table-wrap">
     <table class="user-table">
         <thead>
             <tr>
@@ -55,7 +55,7 @@
         </tbody>
 
     </table>
-
+    </div>
     <!-- Пагинация -->
     <div class="pagination">
         @for (int i = 1; i <= Model.TotalPages; i++)
@@ -78,40 +78,80 @@ else
 
 <script>
     function resetPageAndSubmit() {
-        // При смене размера страницы сбрасываем номер страницы на 1
         document.getElementById('pageInput').value = 1;
         document.getElementById('pageSizeForm').submit();
     }
 
-        document.querySelectorAll('.user-table tbody tr').forEach(row => {
+    // Делегирование: входим в редактирование по двойному клику
+    document.querySelectorAll('.user-table tbody tr').forEach(row => {
         const saveBtn = row.querySelector('.btn-save');
-        const originalData = {};
+        if (!saveBtn) return;
+
+        // Флаг, что в строке есть изменения
+        let rowChanged = false;
 
         row.querySelectorAll('.editable').forEach(td => {
-            originalData[td.dataset.field] = td.innerText;
-
-            td.addEventListener('click', () => {
-                const field = td.dataset.field;
-                const currentValue = td.innerText;
-                td.innerHTML = `<input type="text" value="${currentValue}" />`;
-                const input = td.querySelector('input');
-                input.focus();
-
-                input.addEventListener('blur', () => {
-                    td.innerText = input.value;
-                    // Показываем кнопку сохранения если значение изменилось
-                    if (input.value !== originalData[field]) {
-                        saveBtn.style.display = 'inline-block';
-                    }
-                });
-            });
+            td.addEventListener('dblclick', () => enterEdit(td));
         });
+
+        function enterEdit(td) {
+            // уже редактируется?
+            if (td.classList.contains('editing')) return;
+
+            const field = td.dataset.field;
+            const original = td.innerText.trim();
+            td.dataset.original = original;
+            td.classList.add('editing');
+
+            // инпут: дата для BirthDate, иначе текст
+            const isDate = field === 'BirthDate';
+            const input = document.createElement('input');
+            input.type = isDate ? 'date' : 'text';
+            input.value = original; // для даты ожидается формат yyyy-MM-dd (он у тебя уже такой)
+            input.className = 'cell-input';
+            td.innerHTML = '';
+            td.appendChild(input);
+            input.focus();
+            input.select();
+
+            // Подтвердить изменение
+            const confirm = () => {
+                const newVal = input.value.trim();
+                td.classList.remove('editing');
+                td.innerText = newVal;
+
+                if (newVal !== original) {
+                    rowChanged = true;
+                    saveBtn.style.display = 'inline-block';
+                }
+            };
+
+            // Отменить изменение
+            const cancel = () => {
+                td.classList.remove('editing');
+                td.innerText = original;
+            };
+
+            // Enter — подтвердить, Esc — отменить
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    confirm();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cancel();
+                }
+            });
+
+            // Потеря фокуса — тоже подтверждаем (как в таблицах)
+            input.addEventListener('blur', confirm);
+        }
 
         saveBtn.addEventListener('click', async () => {
             const userId = row.dataset.id;
             const updatedData = {};
             row.querySelectorAll('.editable').forEach(td => {
-                updatedData[td.dataset.field] = td.innerText;
+                updatedData[td.dataset.field] = td.innerText.trim();
             });
 
             try {
@@ -124,6 +164,7 @@ else
                 if (response.ok) {
                     alert('Пользователь успешно обновлён');
                     saveBtn.style.display = 'none';
+                    rowChanged = false;
                 } else {
                     const err = await response.text();
                     alert('Ошибка: ' + err);
@@ -133,8 +174,6 @@ else
             }
         });
     });
-
-
 </script>
 
 <style>
@@ -254,4 +293,56 @@ else
         font-style: italic;
         color: #555;
     }
+
+    /* Горизонтальный скролл, если не помещается */
+    .table-wrap {
+        width: 100%;
+        overflow-x: auto; /* появится нижний ползунок при необходимости */
+        overflow-y: hidden;
+    }
+
+    /* Чтобы таблица реже ломалась и появлялся скролл при узком экране */
+    .user-table {
+        min-width: 1100px; /* подбери под свои колонки */
+    }
+
+        /* Не переносить текст в ячейках — лучше дать скролл */
+        .user-table th, .user-table td {
+            white-space: nowrap;
+        }
+
+    /* Укажем, что ячейки редактируемые */
+    .editable {
+        cursor: text;
+        user-select: none; /* чтобы двойной клик не выделял текст */
+    }
+
+    /* Вид инпута в ячейке */
+    .cell-input {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #bbb;
+        border-radius: 4px;
+        padding: 4px 6px;
+        font: inherit;
+        outline: none;
+    }
+
+        .cell-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,.15);
+        }
+
+    .btn-save {
+        padding: 4px 8px;
+        border-radius: 4px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background-color: #218838;
+        }
 </style>

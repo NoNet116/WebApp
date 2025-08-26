@@ -93,6 +93,26 @@ namespace WebApp.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var result = await _apiService.DeleteAsync($"/api/Users/{id}");
+
+                if (!result)
+                    TempData["ToastMessage"] = "Ошибка при удалении пользователя";
+                else
+                    TempData["ToastMessage"] = $"Пользователь с ID {id} успешно удалён";
+            }
+            catch (Exception ex)
+            {
+                TempData["ToastMessage"] = ex.Message;
+            }
+
+            return RedirectToAction("Index"); 
+        }
+
 
     }
 

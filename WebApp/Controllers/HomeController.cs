@@ -178,7 +178,7 @@ namespace WebApp.Controllers
                 LastName = "Иванов",
                 FirstName = "Иван",
                 FatherName = "Иванович",
-                UserName = "Ivanovi4",
+                UserName = "Ivanov",
                 Email = "i@example.com"
 
             };

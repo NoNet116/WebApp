@@ -50,6 +50,12 @@
                     <td>
                         <button class="btn-save" style="display:none;">Сохранить</button>
                     </td>
+                        <td>
+                            <form method="post" asp-action="Delete" asp-controller="User" onsubmit="return confirmDelete('@user.FirstName', '@user.LastName', '@user.UserName');">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button type="submit" class="btn-delete">Удалить</button>
+                            </form>
+                        </td>
                 </tr>
             }
         </tbody>
@@ -174,6 +180,14 @@ else
             }
         });
     });
+
+    //Удаление
+             function confirmDelete(firstName, lastName, userName) {
+        const displayName = `${firstName} ${lastName} (${userName})`;
+        return confirm(`Вы уверены, что хотите удалить пользователя "${displayName}"?`);
+    }
+
+
 </script>
 
 <style>

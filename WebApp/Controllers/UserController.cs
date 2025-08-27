@@ -50,7 +50,7 @@ namespace WebApp.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> Edit(Guid id, [FromBody] Dictionary<string, string> updatedData)
         {
             try
@@ -83,8 +83,8 @@ namespace WebApp.Controllers
 
                 // Сохраняем изменения через API
               var res =   await _apiService.PutAsync<UserViewModel>($"/api/Users/{id}", user);
-
-                return Ok(new { message = "Пользователь успешно обновлён" });
+                
+                return Ok(new { message = "Test: Пользователь успешно обновлён" });
             }
             catch (Exception ex)
             {
@@ -94,6 +94,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(string id)
         {
             try

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using WebApp.Models;
 using WebApp.Models.View;
 using WebApp.Models.View.User;
@@ -67,20 +69,68 @@ namespace WebApp.Controllers
                 if (!ModelState.IsValid)
                     return View(model);
 
-                // Отправляем запрос на логин через общий сервис
-                var userData = await _apiService.PostAsync<UserDto>(
-                    "/api/auth/login",
-                    new { email = model.Email, password = model.Password }
-                );
+                // Создаем временный HttpClient для логина
+                using var loginClient = new HttpClient();
+                loginClient.BaseAddress = new Uri(_apiService.GetBaseUrl());
+                loginClient.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var loginData = new
+                {
+                    email = model.Email,
+                    password = model.Password
+                };
+
+                var json = JsonSerializer.Serialize(loginData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await loginClient.PostAsync("/api/auth/login", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    TempData["ToastMessage"] = "Неверный логин или пароль.";
+                    TempData["ToastType"] = "error";
+                    return View(model);
+                }
+
+                // Сохраняем куки из ответа логина
+                if (response.Headers.TryGetValues("Set-Cookie", out var setCookies))
+                {
+                    foreach (var setCookie in setCookies)
+                    {
+                        var cookieParts = setCookie.Split(';')[0].Split('=');
+                        if (cookieParts.Length == 2)
+                        {
+                            Response.Cookies.Append(cookieParts[0], cookieParts[1], new CookieOptions
+                            {
+                                HttpOnly = true,
+                                Secure = true,
+                                SameSite = SameSiteMode.Strict,
+                                Expires = DateTimeOffset.Now.AddHours(2)
+                            });
+                        }
+                    }
+                }
+
+                // Получаем данные пользователя с проверкой на null
+                var userData = JsonSerializer.Deserialize<UserDto>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
                 if (userData != null)
                 {
-                    // Создаем claims для cookie-аутентификации
+                    // Безопасное создание claims с проверкой на null
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, userData.Email ?? model.Email)
-                        // можно добавить ID, роли и т.д.
-                    };
+            {
+                new Claim(ClaimTypes.Name, userData.Email ?? model.Email),
+                new Claim(ClaimTypes.NameIdentifier, userData.Id?.ToString() ?? "unknown"),
+                new Claim(ClaimTypes.Role, userData.Role ?? "User")
+            };
+
+                    // Добавляем только те claims, которые имеют значения
+                    if (!string.IsNullOrEmpty(userData.Email))
+                        claims.Add(new Claim(ClaimTypes.Email, userData.Email));
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -90,25 +140,27 @@ namespace WebApp.Controllers
                         new AuthenticationProperties
                         {
                             IsPersistent = true,
-                            ExpiresUtc = DateTime.UtcNow.AddHours(20)
+                            ExpiresUtc = DateTime.UtcNow.AddHours(2)
                         });
+
+                    // Сохраняем информацию в сессии для дополнительной безопасности
+                    HttpContext.Session.SetString("UserEmail", userData.Email ?? "");
+                    HttpContext.Session.SetString("UserId", userData.Id?.ToString() ?? "");
+                    HttpContext.Session.SetString("UserRole", userData.Role ?? "");
 
                     TempData["ToastMessage"] = "Успешный вход!";
                     TempData["ToastType"] = "success";
-
                     return RedirectToAction("Index", "Home");
                 }
 
-                // Если ошибка
-                TempData["ToastMessage"] = "Неверный логин или пароль.";
+                TempData["ToastMessage"] = "Ошибка при обработке данных пользователя.";
                 TempData["ToastType"] = "error";
                 return View(model);
             }
             catch (Exception ex)
             {
-                TempData["ToastMessage"] = ex.Message;
+                TempData["ToastMessage"] = $"Ошибка: {ex.Message}";
                 TempData["ToastType"] = "error";
-
                 ModelState.AddModelError("", ex.Message);
                 return View(model);
             }

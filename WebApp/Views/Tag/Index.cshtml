@@ -1,0 +1,163 @@
+﻿@using WebApp.Models.View.Tag
+@model List<TagViewModel>
+
+@if (Model.Any())
+{
+    <div class="table-wrap material">
+        <div class="table-header">
+            <h2 class="table-title">
+                <span class="icon">🏷️</span>
+                Список тегов
+            </h2>
+        </div>
+
+        <table class="tag-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tag in Model)
+                {
+                    <tr data-id="@tag.Id" class="tag-row">
+                        <td>
+                            <div class="tag-id">#@tag.Id</div>
+                        </td>
+                        <td class="editable" data-field="Name">
+                            <div class="tag-name">@tag.Name</div>
+                        </td>
+                        <td class="editable" data-field="Description">
+                            <div class="tag-desc">@tag.Description</div>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                                {
+                                    <button class="btn btn-sm btn-link text-danger p-0">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <form asp-controller="Tag" asp-action="Delete" asp-route-id="@tag.Id" method="post"
+                                              onsubmit="return confirm('Удалить тег @tag.Name?');">
+                                            <button type="submit" class="btn btn-sm btn-link text-danger p-0" title="Удалить">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-shield"></i>
+                                }
+
+                                
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<style>
+    .material {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+        .material .table-header {
+            padding: 1.5rem 1.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .material .table-title {
+            margin: 0;
+            color: #3f51b5;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .material .tag-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .material .tag-table th {
+                padding: 1rem 1.5rem;
+                text-align: left;
+                color: #666;
+                font-weight: 500;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+        .material .tag-row td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #fafafa;
+        }
+
+        .material .tag-row:hover {
+            background: #fafafa;
+        }
+
+        .material .tag-id {
+            background: #f5f5f5;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #666;
+            display: inline-block;
+        }
+
+        .material .tag-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .material .tag-desc {
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .material .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .material .mdc-btn {
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .material .mdc-btn.edit {
+                background: #e3f2fd;
+                color: #1976d2;
+            }
+
+            .material .mdc-btn.delete {
+                background: #ffebee;
+                color: #d32f2f;
+            }
+
+            .material .mdc-btn:hover {
+                transform: scale(1.1);
+            }
+
+        .material .mdc-icon {
+            font-size: 1.1rem;
+        }
+</style>

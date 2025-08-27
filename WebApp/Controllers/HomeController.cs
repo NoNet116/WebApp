@@ -90,7 +90,7 @@ namespace WebApp.Controllers
                         new AuthenticationProperties
                         {
                             IsPersistent = true,
-                            ExpiresUtc = DateTime.UtcNow.AddHours(1)
+                            ExpiresUtc = DateTime.UtcNow.AddHours(20)
                         });
 
                     TempData["ToastMessage"] = "Успешный вход!";
@@ -135,7 +135,25 @@ namespace WebApp.Controllers
 
             // Очищаем локальные данные
             HttpContext.Session.Clear();
+
+            // Удаляем куки аутентификации
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Удаляем все куки, связанные с аутентификацией
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                if (cookie.StartsWith(".AspNetCore.") || cookie == "auth" || cookie == "token")
+                {
+                    Response.Cookies.Delete(cookie);
+                }
+            }
+
+            // Дополнительно: принудительно удаляем куки
+            Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Если используются дополнительные куки
+            Response.Cookies.Delete(".AspNetCore.Session");
+            Response.Cookies.Delete(".AspNetCore.Antiforgery");
 
             return RedirectToAction("Index");
         }

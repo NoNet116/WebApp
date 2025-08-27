@@ -34,7 +34,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(9999); // время жизни сессии
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // время жизни сессии
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

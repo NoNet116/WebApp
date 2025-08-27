@@ -20,7 +20,7 @@
     <table class="user-table">
         <thead>
             <tr>
-                <th colspan="8" class="table-title">Пользователи</th>
+                <th colspan="10" class="table-title">Пользователи</th>
             </tr>
             <tr>
                 <td>Id</td>
@@ -53,7 +53,9 @@
                         <td>
                             <form method="post" asp-action="Delete" asp-controller="User" onsubmit="return confirmDelete('@user.FirstName', '@user.LastName', '@user.UserName');">
                                 <input type="hidden" name="id" value="@user.Id" />
-                                <button type="submit" class="btn-delete">Удалить</button>
+                                <button type="submit" class="icon-btn" aria-label="Удалить пользователя @user.UserName">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </form>
                         </td>
                 </tr>
@@ -358,5 +360,21 @@ else
 
         .btn-save:hover {
             background-color: #218838;
+        }
+
+        /* Удаление */
+    .icon-btn {
+        background: none;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        padding: 5px 8px;
+        border-radius: 3px;
+        transition: all 0.2s;
+    }
+
+        .icon-btn:hover {
+            color: #dc3545;
+            background-color: #f8f9fa;
         }
 </style>

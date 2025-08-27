@@ -1,0 +1,36 @@
+﻿@using WebApp.Models.View.Article
+@model List<ArticleViewModel>
+
+@if (Model.Any())
+{
+    <div class="list-group">
+        @foreach (var article in Model)
+        {
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@article.Title</h5>
+                    <small class="text-muted">@article.CreatedAt.ToString("dd MMM yyyy")</small>
+                </div>
+                <p class="mb-1 text-muted">@article.Content</p>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <small class="text-primary">By @article.AuthorName</small>
+                    <div>
+                        <span class="badge bg-light text-dark me-2">
+                            <i class="bi bi-tags"></i> @article.TagsCount
+                        </span>
+                        <span class="badge bg-light text-dark">
+                            <i class="bi bi-chat"></i> @article.CommentsCount
+                        </span>
+                    </div>
+                </div>
+                <a href="#" class="stretched-link" aria-label="Read article"></a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> No articles found.
+    </div>
+}

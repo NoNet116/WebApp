@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.View.Article;
 using WebApp.Models.View.Tag;
+using WebApp.Models.View.Tag.Base;
 using WebApp.Services;
+using static WebApp.Controllers.TagController;
 
 namespace WebApp.Controllers
 {
@@ -40,5 +42,90 @@ namespace WebApp.Controllers
             
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([FromBody] TagViewModel model)
+        {
+            // Проверка валидности
+            if (model == null)
+            {
+                return BadRequest(new { success = false, message = "Данные не переданы" });
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Name))
+            {
+                return BadRequest(new { success = false, message = "Название тега не должно быть пустым" });
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Id))
+            {
+                return BadRequest(new { success = false, message = "Поле Id не должно быть пустым" });
+            }
+
+            try
+            {
+                // Отправка на API
+                var result = await _apiService.PutAsync<TagViewModel>("/api/Tag/update", model);
+
+                // Предположим, API возвращает обновлённый объект или успех
+                return Ok(new { success = true, message = "Изменения сохранены", data = result });
+            }
+            catch (Exception ex)
+            {
+                // Логируем ошибку, возвращаем JSON с ошибкой
+                _logger.LogError(ex, "Ошибка при обновлении тега с Id {TagId}", model.Id);
+                return StatusCode(500, new { success = false, message = "Ошибка при сохранении", details = ex.Message });
+            }
+        }
+
+        public class ApiResponse<T>
+        {
+            public bool Success { get; set; }
+            public T? Data { get; set; }
+            public int StatusCode { get; set; }
+            public List<string>? Errors { get; set; }
+            public bool DataIsNull { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(TagBase model)
+        {
+            if (string.IsNullOrEmpty(model.Name))
+            {
+                return Json(new { success = false, message = "Название обязательно" });
+            }
+            if (string.IsNullOrEmpty(model.Description))
+            {
+               model.Description = string.Empty;
+            }
+
+            try
+            {
+                
+                var apiResponse = await _apiService.PostAsync<ApiResponse<bool>>("/api/Tag/Create", model);
+
+                if (apiResponse!.Success && apiResponse.Data)
+                {
+                    return Json(new { success = true, message = "[Create] Тег создан успешно" });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = apiResponse.Errors?.FirstOrDefault() ?? "Не удалось создать тег"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при создании тега");
+                return Json(new { success = false, message = "Внутренняя ошибка сервера" });
+            }
+        }
+
+
     }
 }

@@ -4,6 +4,6 @@ namespace WebApp.Models.View.Tag
 {
     public class TagViewModel :TagBase
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; } = null!;
     }
 }

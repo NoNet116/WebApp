@@ -88,10 +88,10 @@ main {
     transition: var(--transition);
 }
 
-    main:hover {
+    /*main:hover {
         transform: translateY(-3px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
+    }*/
 
 .aside-left, .aside-right {
     background: white;
@@ -101,10 +101,10 @@ main {
     transition: var(--transition);
 }
 
-    .aside-left:hover, .aside-right:hover {
+    /*.aside-left:hover, .aside-right:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
+    }*/
 
 /* Mobile Menu Button */
 .menu-toggle {

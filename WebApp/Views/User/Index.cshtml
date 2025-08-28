@@ -115,7 +115,7 @@ else
             const isDate = field === 'BirthDate';
             const input = document.createElement('input');
             input.type = isDate ? 'date' : 'text';
-            input.value = original; // для даты ожидается формат yyyy-MM-dd (он у тебя уже такой)
+            input.value = original; // для даты ожидается формат yyyy-MM-dd
             input.className = 'cell-input';
             td.innerHTML = '';
             td.appendChild(input);

@@ -1,0 +1,223 @@
+﻿@using WebApp.Models.View.Tag.Base
+@model TagBase
+
+<!-- Кнопка открытия -->
+<button type="button" class="btn btn-primary" onclick="openOverlay()">
+    <i class="fa-solid fa-plus"></i> Создать тег
+</button>
+
+<!-- Overlay контейнер -->
+<div id="overlay" class="overlay" style="display: none;">
+    <div class="overlay-content">
+        <div class="overlay-header">
+            <h3>Создание тега</h3>
+            <button type="button" class="overlay-close" onclick="closeOverlay()">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+
+        <form asp-controller="Tag" asp-action="Create" method="post" class="overlay-body">
+            <div class="form-group">
+                <label asp-for="Name">Название тега *</label>
+                <input asp-for="Name" type="text" required
+                       placeholder="Введите название тега">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Описание</label>
+                <textarea asp-for="Description"
+                          placeholder="Описание тега (необязательно)"
+                          rows="3"></textarea>
+            </div>
+
+            <div class="overlay-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeOverlay()">
+                    Отмена
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Создать
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+        .overlay.show {
+            opacity: 1;
+        }
+
+    .overlay-content {
+        background: white;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh;
+        overflow-y: auto;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+    }
+
+    .overlay.show .overlay-content {
+        transform: scale(1);
+    }
+
+    .overlay-header {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .overlay-header h3 {
+            margin: 0;
+            color: #333;
+        }
+
+    .overlay-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #999;
+        transition: color 0.3s ease;
+    }
+
+        .overlay-close:hover {
+            color: #333;
+        }
+
+    .overlay-body {
+        padding: 20px;
+    }
+
+    .overlay-footer {
+        padding: 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+        }
+
+            .form-group input:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: #007bff;
+            }
+            .btn{
+                width:100%;
+            }
+</style>
+
+<script>
+    function openOverlay() {
+        const overlay = document.getElementById('overlay');
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.classList.add('show'), 10);
+    }
+
+    function closeOverlay() {
+        const overlay = document.getElementById('overlay');
+        overlay.classList.remove('show');
+        setTimeout(() => overlay.style.display = 'none', 300);
+    }
+
+    // Обработка отправки формы через AJAX
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('#overlay form');
+        if (form) {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault(); // Предотвращаем обычную отправку
+
+                const formData = new FormData(this);
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+
+                // Показываем индикатор загрузки
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Создание...';
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        }
+                    });
+
+                    let result;
+                    try {
+                        result = await response.json();
+                    } catch {
+                        result = { success: false, message: 'Некорректный ответ сервера' };
+                    }
+
+                    if (response.ok && result.success) {
+                        closeOverlay();
+                        showNotification(result.message || 'Тег успешно создан!', 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        showNotification(result.message || 'Ошибка при создании тега', 'error');
+                        console.error('Ошибка сервера:', result);
+                    }
+                } catch (error) {
+                    showNotification('Ошибка сети', 'error');
+                    console.error('Сетевая ошибка:', error);
+                } finally {
+                    // Восстанавливаем кнопку
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Закрытие по клику вне контента
+        document.getElementById('overlay').addEventListener('click', function (e) {
+            if (e.target === this) closeOverlay();
+        });
+
+        // Закрытие по ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeOverlay();
+        });
+    });
+</script>

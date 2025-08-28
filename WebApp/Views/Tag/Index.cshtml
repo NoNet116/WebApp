@@ -1,5 +1,10 @@
 ﻿@using WebApp.Models.View.Tag
+@using WebApp.Models.View.Tag.Base
 @model List<TagViewModel>
+@Html.AntiForgeryToken()
+@section _AsideRight {
+       @await Html.PartialAsync("_TagCreate", new WebApp.Models.View.Tag.Base.TagBase())
+}
 
 @if (Model.Any())
 {
@@ -28,18 +33,34 @@
                             <div class="tag-id">#@tag.Id</div>
                         </td>
                         <td class="editable" data-field="Name">
-                            <div class="tag-name">@tag.Name</div>
+                            <div class="tag-name view-mode">@tag.Name</div>
+                            <input type="text" class="edit-mode form-control" value="@tag.Name" style="display:none;" />
                         </td>
                         <td class="editable" data-field="Description">
-                            <div class="tag-desc">@tag.Description</div>
+                            <div class="tag-desc view-mode">@tag.Description</div>
+                            <input type="text" class="edit-mode form-control" value="@tag.Description" style="display:none;" />
                         </td>
                         <td>
                             <div class="action-buttons">
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                                 {
-                                    <button class="btn btn-sm btn-link text-danger p-0">
+                                    <button class="btn btn-edit text-primary p-0" title="Редактировать"
+                                            onclick="toggleEdit(this)">
                                         <i class="fa-solid fa-pen"></i>
                                     </button>
+                                    
+                                    <button class="btn btn-save text-success p-0" title="Сохранить" 
+                                            style="display:none;"
+                                            onclick="saveTag('@tag.Id', this)">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    
+                                    <button class="btn btn-cancel text-secondary p-0" title="Отменить" 
+                                            style="display:none;"
+                                            onclick="cancelEdit(this)">
+                                        <i class="fa-solid fa-times"></i>
+                                    </button>
+
                                     @if (User.IsInRole("Administrator"))
                                     {
                                         <form asp-controller="Tag" asp-action="Delete" asp-route-id="@tag.Id" method="post"
@@ -54,8 +75,6 @@
                                 {
                                     <i class="fa-solid fa-shield"></i>
                                 }
-
-                                
                             </div>
                         </td>
                     </tr>
@@ -65,6 +84,111 @@
     </div>
 }
 
+<script>
+function toggleEdit(button) {
+    const row = button.closest('tr');
+    const viewElements = row.querySelectorAll('.view-mode');
+    const editElements = row.querySelectorAll('.edit-mode');
+    const editBtn = row.querySelector('.btn-edit');
+    const saveBtn = row.querySelector('.btn-save');
+    const cancelBtn = row.querySelector('.btn-cancel');
+
+    // Переключаем режимы
+    viewElements.forEach(el => el.style.display = 'none');
+    editElements.forEach(el => el.style.display = 'block');
+    editBtn.style.display = 'none';
+    saveBtn.style.display = 'inline-block';
+    cancelBtn.style.display = 'inline-block';
+}
+
+function cancelEdit(button) {
+    const row = button.closest('tr');
+    const viewElements = row.querySelectorAll('.view-mode');
+    const editElements = row.querySelectorAll('.edit-mode');
+    const editBtn = row.querySelector('.btn-edit');
+    const saveBtn = row.querySelector('.btn-save');
+    const cancelBtn = row.querySelector('.btn-cancel');
+
+    // Возвращаем к исходному состоянию
+    viewElements.forEach(el => el.style.display = 'block');
+    editElements.forEach(el => el.style.display = 'none');
+    editBtn.style.display = 'inline-block';
+    saveBtn.style.display = 'none';
+    cancelBtn.style.display = 'none';
+}
+
+    async function saveTag(tagId, button) {
+            console.log("Функция saveTag вызвана, ID:", tagId);
+            const row = button.closest('tr');
+
+        // Находим поля
+        const nameInput = row.querySelector('td[data-field="Name"] input');
+        const descInput = row.querySelector('td[data-field="Description"] input');
+
+        if (!nameInput || !descInput) {
+            console.error("Не удалось найти поля ввода в строке для тега ID:", tagId);
+            return;
+        }
+
+        const tagData = {
+            Id: tagId,
+            Name: nameInput.value.trim(),
+            Description: descInput.value.trim()
+        };
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        if (!token) {
+            console.error("Токен CSRF (__RequestVerificationToken) не найден на странице");
+            return;
+        }
+
+        console.log("=== Сохраняем тег ===");
+        console.log("Данные:", tagData);
+
+        try {
+            const response = await fetch('/Tag/Edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify(tagData)
+            });
+
+            console.log("Статус ответа:", response.status);
+
+            let resultText = await response.text();
+            console.log("Ответ сервера (raw):", resultText);
+
+            let result;
+            try {
+                result = JSON.parse(resultText);
+            } catch {
+                console.warn("Не удалось распарсить JSON, ответ в тексте:", resultText);
+                result = null;
+            }
+
+            if (response.ok && result?.success) {
+                // Обновляем данные в строке
+                row.querySelector('.tag-name').textContent = tagData.Name;
+                row.querySelector('.tag-desc').textContent = tagData.Description;
+
+                cancelEdit(button);
+                console.log("Тег успешно обновлён:", tagData);
+                alert("Изменения сохранены!");
+            } else {
+                console.error("Ошибка при сохранении:", result?.message || response.statusText);
+                alert(result?.message || "Ошибка при сохранении");
+            }
+        } catch (error) {
+            console.error("Ошибка при отправке запроса:", error);
+            alert("Ошибка при сохранении. См. консоль для подробностей.");
+        }
+
+        console.log("=== Конец сохранения ===");
+    }
+
+</script>
 <style>
     .material {
         background: #fff;
@@ -120,11 +244,13 @@
         .material .tag-name {
             font-weight: 500;
             color: #333;
+            width: 200px;
         }
 
         .material .tag-desc {
             color: #666;
             line-height: 1.4;
+            width: 200px;
         }
 
         .material .action-buttons {

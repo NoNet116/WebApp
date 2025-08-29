@@ -2,8 +2,15 @@
 @using WebApp.Models.View.Tag.Base
 @model List<TagViewModel>
 @Html.AntiForgeryToken()
+@{
+    var selectorModel = new WebApp.Models.View.SelectorViewModel()
+            {
+                Items = Model
+            };
+}
 @section _AsideRight {
        @await Html.PartialAsync("_TagCreate", new WebApp.Models.View.Tag.Base.TagBase())
+        
 }
 
 @if (Model.Any())

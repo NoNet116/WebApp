@@ -1,0 +1,63 @@
+﻿@model dynamic
+@{
+    string modalId = ViewData["ModalId"]?.ToString() ?? "dynamicModal";
+    string formAction = ViewData["FormAction"]?.ToString() ?? "#";
+    string formTitle = ViewData["FormTitle"]?.ToString() ?? "Создать объект";
+    string submitText = ViewData["SubmitText"]?.ToString() ?? "Сохранить";
+    string btnName = ViewData["ButtonName"]?.ToString() ?? "Создать";
+    var htmlElement = ViewData["htmlElement"]?.ToString() ?? null;
+
+}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createArticleModal">
+    <i class="fa-solid fa-plus"></i> @btnName
+</button>
+
+<div class="modal fade" id="@modalId" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Заголовок -->
+            <div class="modal-header">
+                <h5 class="modal-title">@formTitle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+
+            <!-- Форма -->
+            <form asp-action="@formAction" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    @foreach (var prop in Model.GetType().GetProperties())
+                    {
+                        var propName = prop.Name;
+                        var propType = prop.PropertyType;
+                        var label = propName; 
+
+                        <div class="mb-3">
+                            <label for="@propName" class="form-label">@label</label>
+                            @if (propType == typeof(string))
+                            {
+                                <textarea name="@propName" id="@propName" class="form-control" rows="1"></textarea>
+                            }
+                            else if (propType == typeof(int))
+                            {
+                                <input type="number" name="@propName" id="@propName" class="form-control" />
+                            }
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(htmlElement))
+                    {
+                        <div class="mb-3">
+                            @await Html.PartialAsync($"{htmlElement}")
+                        </div>
+                    }
+                </div>
+               
+                <!-- Кнопки -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">@submitText</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

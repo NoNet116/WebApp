@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Models;
 using WebApp.Models.View.Article;
 using WebApp.Models.View.Tag;
 using WebApp.Models.View.Tag.Base;
@@ -78,16 +79,7 @@ namespace WebApp.Controllers
                 return StatusCode(500, new { success = false, message = "Ошибка при сохранении", details = ex.Message });
             }
         }
-
-        public class ApiResponse<T>
-        {
-            public bool Success { get; set; }
-            public T? Data { get; set; }
-            public int StatusCode { get; set; }
-            public List<string>? Errors { get; set; }
-            public bool DataIsNull { get; set; }
-        }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TagBase model)
@@ -126,6 +118,14 @@ namespace WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            var tags = await _apiService.GetAsync<ApiResponse<List<TagViewModel>>>($"/api/Tag/by-name?name={query}");
+           if(!tags!.DataIsNull)
+                return Ok(tags.Data!.Select(x =>x.Name));
 
+            return Ok(Enumerable.Empty<string>());
+        }
     }
 }

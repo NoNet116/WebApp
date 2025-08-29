@@ -1,0 +1,137 @@
+﻿<div class="mb-3 position-relative">
+    <label class="form-label">Теги</label>
+    <input type="text" id="tagInput" class="form-control" placeholder="Начните вводить тег..." autocomplete="off" />
+
+    <!-- Выпадающий список -->
+    <ul id="tagSuggestions" class="list-group position-absolute w-100 shadow-sm"
+        style="z-index: 1050; max-height: 150px; overflow-y: auto; display: none;">
+    </ul>
+
+    <!-- Выбранные теги -->
+    <div id="selectedTags" class="mt-2 d-flex flex-wrap gap-2"></div>
+</div>
+
+<style>
+    #tagSuggestions li {
+        cursor: pointer;
+    }
+
+        #tagSuggestions li:hover {
+            background-color: #f8f9fa;
+        }
+
+    .tag-chip {
+        background: #e9ecef;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .tag-chip .remove {
+            margin-left: 5px;
+            cursor: pointer;
+            color: #dc3545;
+        }
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tagInput = document.getElementById("tagInput");
+        const tagSuggestions = document.getElementById("tagSuggestions");
+        const selectedTagsContainer = document.getElementById("selectedTags");
+        const selectedTags = new Set();
+
+        let debounceTimeout;
+
+        // Поиск тегов с debounce
+        tagInput.addEventListener("input", () => {
+            clearTimeout(debounceTimeout);
+            const query = tagInput.value.trim();
+            if (!query) {
+                tagSuggestions.style.display = "none";
+                return;
+            }
+
+            debounceTimeout = setTimeout(async () => {
+                const res = await fetch(`/Tag/Search?query=${encodeURIComponent(query)}`);
+                const tags = await res.json();
+                renderSuggestions(tags, query);
+            }, 300);
+        });
+
+        // Рендер списка подсказок
+        function renderSuggestions(tags, query) {
+            tagSuggestions.innerHTML = "";
+            if (tags.length === 0) {
+                const li = document.createElement("li");
+                li.className = "list-group-item text-muted";
+                li.textContent = `Нажмите Enter, чтобы добавить "${query}"`;
+                tagSuggestions.appendChild(li);
+                tagSuggestions.style.display = "block";
+                return;
+            }
+
+            tags.forEach(tag => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = tag;
+                li.addEventListener("click", () => addTag(tag));
+                tagSuggestions.appendChild(li);
+            });
+
+            tagSuggestions.style.display = "block";
+        }
+
+        // Добавление нового тега
+        tagInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const newTag = tagInput.value.trim();
+                if (newTag) addTag(newTag);
+            }
+        });
+
+        // Добавить тег в выбранные
+        function addTag(tag) {
+            if (selectedTags.has(tag)) {
+                tagInput.value = "";
+                tagSuggestions.style.display = "none";
+                return;
+            }
+
+            selectedTags.add(tag);
+
+            const chip = document.createElement("div");
+            chip.className = "tag-chip";
+            chip.innerHTML = `${tag} <span class="remove">&times;</span>`;
+
+            chip.querySelector(".remove").addEventListener("click", () => {
+                selectedTags.delete(tag);
+                chip.remove();
+            });
+
+            selectedTagsContainer.appendChild(chip);
+
+            // Добавляем скрытое поле для отправки на сервер
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "Tags";
+            hiddenInput.value = tag;
+            chip.appendChild(hiddenInput);
+
+            tagInput.value = "";
+            tagSuggestions.style.display = "none";
+        }
+
+        // Закрытие списка подсказок при клике вне
+        document.addEventListener("click", (e) => {
+            if (!tagSuggestions.contains(e.target) && e.target !== tagInput) {
+                tagSuggestions.style.display = "none";
+            }
+        });
+    });
+</script>
+

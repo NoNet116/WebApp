@@ -1,5 +1,18 @@
 ﻿@using WebApp.Models.View.Article
+@using WebApp.Models.View.Article.Base
 @model List<ArticleViewModel>
+@section _AsideRight {
+    @await Html.PartialAsync("_ModalForm", new ArticleBase(), new ViewDataDictionary(ViewData)
+    {
+        { "ModalId", "createArticleModal" },
+        { "FormAction", "CreateArticle" },
+        { "FormTitle", "Создание статьи" },
+        { "SubmitText", "Создать" },
+        { "ButtonName", "Новая статья"},
+        { "htmlElement", "_Selector"}
+    })
+
+}
 
 @if (Model.Any())
 {
@@ -13,15 +26,29 @@
                 </div>
                 <p class="mb-1 text-muted">@article.Content</p>
                 <div class="d-flex justify-content-between align-items-center mt-2">
-                    <small class="text-primary">By @article.AuthorName</small>
-                    <div>
-                        <span class="badge bg-light text-dark me-2">
-                            <i class="bi bi-tags"></i> @article.TagsCount
-                        </span>
-                        <span class="badge bg-light text-dark">
-                            <i class="bi bi-chat"></i> @article.CommentsCount
-                        </span>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        @foreach (var tag in article.Tags)
+                        {
+                            <span class="badge bg-secondary text-white article-tag">@tag</span>
+                        }
                     </div>
+                    <ul style="list-style: none;">
+                        <li>
+                            <div>
+                                <span class="badge bg-light text-dark me-2">
+                                    <i class="bi bi-tags"></i> @article.TagsCount
+                                </span>
+                                <span class="badge bg-light text-dark">
+                                    <i class="bi bi-chat"></i> @article.CommentsCount
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <small class="text-primary">By @article.AuthorName</small>
+                        </li>
+                    </ul>
+                    
+                        
                 </div>
                 <a href="#" class="stretched-link" aria-label="Read article"></a>
             </div>
@@ -34,3 +61,30 @@ else
         <i class="bi bi-info-circle"></i> No articles found.
     </div>
 }
+
+<style>
+    .article-tag {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.7rem;
+        border-radius: 12px;
+        cursor: default;
+        transition: background 0.2s;
+    }
+
+        .article-tag:hover {
+            background-color: #6c757d; /* чуть темнее при наведении */
+        }
+
+    .list-group-item {
+        position: relative;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .list-group-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+</style>

@@ -1,0 +1,299 @@
+﻿@using WebApp.Models.View.Article
+@model ArticleViewModel
+
+@if (Model != null)
+{
+    <div class="article-container">
+        <!-- Заголовок и действия -->
+        <div class="article-header">
+            <h1 class="article-title">@Model.Title</h1>
+
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.Identity.Name == Model.AuthorName))
+            {
+                <div class="article-actions">
+                    <a asp-controller="Article"
+                       asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning">
+                        ✏️ Редактировать
+                    </a>
+                    <form asp-controller="Article"
+                          asp-action="Delete"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          onsubmit="return confirm('Вы уверены, что хотите удалить эту статью?')"
+                          class="d-inline">
+                        <button type="submit" class="btn btn-danger">🗑️ Удалить</button>
+                    </form>
+                </div>
+            }
+        </div>
+
+        <!-- Мета-информация -->
+        <div class="article-meta">
+            <span class="author">Автор: @Model.AuthorName</span>
+            <span class="created-at">Опубликовано: @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+            
+                <span class="updated-at">Обновлено: @Model.UpdatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+            
+        </div>
+
+        <!-- Тело статьи -->
+        <div class="article-content">
+            <p>@Model.Content</p>
+        </div>
+
+        <!-- Теги -->
+        @if (Model.Tags.Any())
+        {
+            <div class="article-tags">
+                @foreach (var tag in Model.Tags)
+                {
+                    <span class="tag badge bg-secondary">#@tag</span>
+                }
+            </div>
+        }
+
+        <!-- Комментарии -->
+        <div class="comments-section">
+            <h3>Комментарии (@Model.Comments.Count)</h3>
+
+            @if (Model.Comments.Any())
+            {
+                <div class="comments-list">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <div class="comment-card">
+                            <div class="comment-header">
+                                <strong class="comment-author">@comment.Author</strong>
+                                <span class="comment-date">@comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+                            </div>
+                            <div class="comment-body">
+                                <p>@comment.Message</p>
+                            </div>
+                            
+                                <div class="comment-footer">
+                                    <small>Изменено: @comment.UpdatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                                </div>
+                            
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">Комментариев пока нет. Будьте первым!</p>
+            }
+
+            <!-- Форма добавления комментария -->
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="add-comment">
+                    <h4>Добавить комментарий</h4>
+                    <form asp-controller="Comment" asp-action="Create" method="post">
+                        <input type="hidden" name="ArticleId" value="@Model.Id" />
+                        <div class="form-group">
+                            <textarea name="Message" class="form-control" rows="3"
+                              placeholder="Ваш комментарий..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Отправить</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <a asp-controller="Account" asp-action="Login">Войдите</a>, чтобы оставить комментарий
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<style>
+    .article-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .article-header {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .article-title {
+        flex: 1;
+        color: #2c3e50;
+        margin: 0;
+    }
+
+    .article-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .article-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #6c757d;
+        flex-wrap: wrap;
+    }
+
+    .article-content {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .article-tags {
+        margin-bottom: 30px;
+    }
+
+    .tag {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+    .comments-section {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .comments-list {
+        margin-bottom: 30px;
+    }
+
+    .comment-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #007bff;
+    }
+
+    .comment-header {
+        display: flex;
+        justify-content: between;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .comment-author {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .comment-date {
+        color: #6c757d;
+        font-size: 12px;
+    }
+
+    .comment-body {
+        margin-bottom: 10px;
+    }
+
+    .comment-footer {
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .add-comment {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+        border: none;
+    }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-1px);
+        }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+    .alert {
+        padding: 15px;
+        border-radius: 6px;
+        margin: 10px 0;
+    }
+
+    .alert-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+
+    @@media (max-width: 768px) {
+        .article-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .article-actions {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .article-meta {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+</style>

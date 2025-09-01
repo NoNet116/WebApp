@@ -1,4 +1,6 @@
 ﻿using WebApp.Models.View.Article.Base;
+using WebApp.Models.View.Comment;
+using WebApp.Models.View.Comment.Base;
 
 namespace WebApp.Models.View.Article
 {
@@ -15,8 +17,8 @@ namespace WebApp.Models.View.Article
         public int TagsCount { get; set; }
         public int CommentsCount { get; set; }
 
-        public List<string> Tags { get; set; } 
+        public List<string> Tags { get; set; }  = new List<string>();
 
-       // public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<CommentBase> Comments { get; set; } = new ();
     }
 }

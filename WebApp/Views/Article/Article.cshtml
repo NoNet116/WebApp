@@ -1,5 +1,33 @@
 ﻿@using WebApp.Models.View.Article
 @model ArticleViewModel
+@section Scripts {
+    <script src="~/js/Selector.js" asp-append-version="true"></script>
+}
+
+@section _AsideRight {
+    @if (User?.Identity?.IsAuthenticated == true && (User.IsInRole("Administrator") || User.Identity.Name == Model.AuthorName))
+    {
+        <div class="article-actions">
+            <a asp-controller="Article"
+               asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                ✏️ Редактировать
+            </a>
+            <form asp-controller="Article"
+                  asp-action="Delete"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  onsubmit="return confirm('Вы уверены, что хотите удалить эту статью?')"
+                  class="d-inline">
+                <button type="submit" class="btn btn-danger">🗑️ Удалить</button>
+            </form>
+        </div>
+    }
+    
+} 
+
+
 
 @if (Model != null)
 {
@@ -8,33 +36,17 @@
         <div class="article-header">
             <h1 class="article-title">@Model.Title</h1>
 
-            @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrator") || User.Identity.Name == Model.AuthorName))
-            {
-                <div class="article-actions">
-                    <a asp-controller="Article"
-                       asp-action="Edit"
-                       asp-route-id="@Model.Id"
-                       class="btn btn-warning">
-                        ✏️ Редактировать
-                    </a>
-                    <form asp-controller="Article"
-                          asp-action="Delete"
-                          asp-route-id="@Model.Id"
-                          method="post"
-                          onsubmit="return confirm('Вы уверены, что хотите удалить эту статью?')"
-                          class="d-inline">
-                        <button type="submit" class="btn btn-danger">🗑️ Удалить</button>
-                    </form>
-                </div>
-            }
+            
         </div>
 
         <!-- Мета-информация -->
         <div class="article-meta">
             <span class="author">Автор: @Model.AuthorName</span>
             <span class="created-at">Опубликовано: @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
-            
+            @if ((Model.UpdatedAt - Model.CreatedAt).Duration() > TimeSpan.FromSeconds(1))
+            {
                 <span class="updated-at">Обновлено: @Model.UpdatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+            }
             
         </div>
 
@@ -58,7 +70,7 @@
         <div class="comments-section">
             <h3>Комментарии (@Model.Comments.Count)</h3>
 
-            @if (Model.Comments.Any())
+            @if (Model.Comments?.Any() == true)
             {
                 <div class="comments-list">
                     @foreach (var comment in Model.Comments)

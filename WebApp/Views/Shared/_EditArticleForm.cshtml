@@ -1,0 +1,14 @@
+﻿@using WebApp.Models.View.Article
+@model EditArticleViewModel
+
+<input type="hidden" name="Id" value="@Model.Id" />
+
+<div class="mb-3">
+    <label for="Title" class="form-label">Заголовок</label>
+    <input type="text" name="Title" id="Title" class="form-control" value="@Model.Title" required />
+</div>
+
+<div class="mb-3">
+    <label for="Content" class="form-label">Содержание</label>
+    <textarea name="Content" id="Content" class="form-control" rows="10" required>@Model.Content</textarea>
+</div>

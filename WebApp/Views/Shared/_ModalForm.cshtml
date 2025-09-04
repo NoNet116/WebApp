@@ -23,8 +23,6 @@
 
             <!-- Форма -->
             <form asp-action="@formAction" method="post">
-                @Html.AntiForgeryToken()
-
                 <div class="modal-body">
                     @foreach (var prop in Model.GetType().GetProperties())
                     {
@@ -46,9 +44,16 @@
                     }
                     @if (!string.IsNullOrEmpty(htmlElement))
                     {
-                        <div class="mb-3">
-                            @await Html.PartialAsync($"{htmlElement}")
-                        </div>
+                        if (htmlElement=="tag")
+                        {
+                            @await Html.PartialAsync("_Selector2", new UniversalSelectorModel
+                            {
+                                FieldName = "Tags",
+                                        Label = "Теги статьи",
+                                        Placeholder = "Введите тег...",
+                                        SearchEndpoint = "/Tag/Search"
+                                        })
+                        }
                     }
                 </div>
                

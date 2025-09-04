@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApp.Models;
 using WebApp.Models.View.Article;
-using WebApp.Models.View.Article.Base;
 using WebApp.Models.View.Comment;
 using WebApp.Services;
 
@@ -13,8 +11,8 @@ namespace WebApp.Controllers
     {
         private readonly ILogger<ArticleController> _logger = logger;
         private readonly ApiService _apiService = apiService;
-        
-        [HttpGet]   
+
+        [HttpGet("Articles")]
         public async Task<IActionResult> Index(int startIndex = 0, int count = 10)
         {
             try
@@ -25,7 +23,8 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-
+                TempData["ToastMessage"] = ex.Message;
+                TempData["ToastType"] = "error";
                 return View();
             }
         }
@@ -33,12 +32,13 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateArticle(RegisterArticleViewModel model)
         {
-            if (!ModelState.IsValid) { 
+            if (!ModelState.IsValid)
+            {
                 return RedirectToAction("Index");
             }
             try
             {
-                var result = await _apiService.PostAsync<ApiResponse<ArticleViewModel>>("/api/Article",model);
+                var result = await _apiService.PostAsync<ApiResponse<ArticleViewModel>>("/api/Article", model);
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet] 
+        [HttpGet("Article-{id}")]
         public async Task<IActionResult> Article(uint id)
         {
             var result = await _apiService.GetAsync<ArticleViewModel>($"api/Article/{id}");
@@ -66,27 +66,74 @@ namespace WebApp.Controllers
             if (comments != null)
             {
                 result.Comments = comments!.Comments;
-                
             }
             return View(result);
         }
 
-        /*// Edit action
-        [Authorize]
+        // Edit action
         public async Task<IActionResult> Edit(uint id)
         {
-
             // Проверка прав доступа
-            var article = await _articleService.GetByIdAsync(id);
-            if (article == null) return NotFound();
+            var article = await _apiService.GetAsync<ArticleViewModel>($"api/Article/{id}");
 
-            if (!User.IsInRole("Admin") && User.Identity.Name != article.AuthorName)
-                return Forbid();
+            if (article == null)
+            {
+                TempData["ToastMessage"] = "Статья не найдена";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!User.IsInRole("Administrator") && article.AuthorId != currentUserId)
+            {
+                TempData["ToastMessage"] = "У вас нет прав для редактирования этой статьи";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Article", new { id });
+            }
 
-            return View(article);
-        }*/
+            var editModel = new EditArticleViewModel
+            {
+                Id = article.Id,
+                Title = article.Title,
+                Content = article.Content,
+                Tags = article.Tags
+            };
+            return View(editModel);
+        }
 
-       [HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditArticleViewModel model)
+        {
+            // Проверка прав доступа на стороне Api?
+            /*var article = await _apiService.GetAsync<ArticleViewModel>($"api/Article/{model.Id}");
+
+            if (article == null)
+            {
+                TempData["ToastMessage"] = "Статья не найдена";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Index");
+            }
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!User.IsInRole("Administrator") && article.AuthorId != currentUserId)
+            {
+                TempData["ToastMessage"] = "У вас нет прав для редактирования этой статьи";
+                TempData["ToastType"] = "error";
+                return RedirectToAction("Article", new { model.Id });
+            }*/
+
+            try
+            {
+                var article = await _apiService.PutAsync<ApiResponse<EditArticleViewModel>>($"api/Article/Edit", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("",ex.Message);
+                return View(model);
+            }
+            
+            return RedirectToAction("Article", new { id = model.Id });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete(uint id)
         {
             var article = await _apiService.GetAsync<ArticleViewModel>($"api/Article/{id}");
@@ -107,6 +154,5 @@ namespace WebApp.Controllers
 
             return RedirectToAction("Index");
         }
-
     }
 }

@@ -88,7 +88,7 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                // Можно логировать ex
+                
                 return StatusCode(500, new { message = ex.Message });
             }
         }

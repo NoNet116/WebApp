@@ -1,0 +1,126 @@
+﻿@model UniversalSelectorModel
+@{
+    string fieldName = Model.FieldName;
+    string placeholder = Model.Placeholder ?? "Начните вводить...";
+    string label = Model.Label ?? fieldName;
+    bool allowCreate = Model.AllowCreate;
+    string endpoint = Model.SearchEndpoint ?? "/Universal/Search";
+}
+
+<div class="universal-selector mb-3 position-relative" data-field-name="@fieldName">
+    <label class="form-label">@label</label>
+
+    <div class="input-group">
+        <input type="text"
+               class="form-control universal-search"
+               placeholder="@placeholder"
+               autocomplete="off"
+               data-endpoint="@endpoint"
+               data-allow-create="@allowCreate.ToString().ToLower()">
+
+        @* @if (allowCreate)
+        {
+            <button type="button" class="btn btn-outline-primary universal-add-btn">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        } *@
+    </div>
+
+    <!-- Выпадающий список подсказок -->
+    <ul class="universal-suggestions list-group position-absolute w-100 shadow-sm"
+        style="z-index: 1050; max-height: 200px; overflow-y: auto; display: none;">
+    </ul>
+
+    <!-- Выбранные элементы -->
+    <div class="selected-items mt-2 d-flex flex-wrap gap-2">
+        @if (Model.SelectedItems != null)
+        {
+            foreach (var item in Model.SelectedItems)
+            {
+                <div class="selected-item-chip" data-value="@item.Value">
+                    @item.Text
+                    <span class="remove-btn">&times;</span>
+                    <input type="hidden" name="@fieldName" value="@item.Value" />
+                </div>
+            }
+        }
+    </div>
+@* 
+    <!-- Модальное окно для создания нового элемента -->
+    @if (allowCreate)
+    {
+        <div class="modal fade universal-create-modal" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Добавить новый элемент</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control universal-new-item" placeholder="Введите название">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-primary universal-confirm-create">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    }*@
+</div>
+
+<style>
+    .universal-selector {
+        position: relative;
+    }
+
+    .universal-suggestions {
+        top: 100%;
+        left: 0;
+        margin-top: 2px;
+    }
+
+        .universal-suggestions li {
+            cursor: pointer;
+            padding: 8px 12px;
+            border: none;
+            border-bottom: 1px solid #eee;
+        }
+
+            .universal-suggestions li:hover {
+                background-color: #f8f9fa;
+            }
+
+            .universal-suggestions li:last-child {
+                border-bottom: none;
+            }
+
+    .selected-item-chip {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-radius: 16px;
+        padding: 4px 12px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .selected-item-chip .remove-btn {
+            color: #f44336;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+            .selected-item-chip .remove-btn:hover {
+                color: #d32f2f;
+            }
+
+    .universal-search:focus + .universal-suggestions,
+    .universal-suggestions:hover {
+        display: block !important;
+    }
+</style>
+

@@ -1,0 +1,37 @@
+﻿@using WebApp.Models.View.Article
+@model EditArticleViewModel
+
+@if (Model != null)
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form method="post" asp-action="Edit" asp-controller="Article">
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Заголовок</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Content" class="form-label">Содержание</label>
+            <textarea asp-for="Content" class="form-control" rows="6"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        @await Html.PartialAsync("_Selector2", new UniversalSelectorModel
+        {
+            FieldName = "Tags",
+            Label = "Теги статьи",
+            Placeholder = "Введите тег...",
+            SelectedItems = Model.Tags?.Select(t => new SelectorItem { Value = t, Text = t }).ToList(),
+            SearchEndpoint = "/Tag/Search"
+        })
+
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+</form>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Selector2.js" asp-append-version="true"></script>
+}

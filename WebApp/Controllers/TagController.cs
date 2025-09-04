@@ -122,8 +122,11 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Search(string query)
         {
             var tags = await _apiService.GetAsync<ApiResponse<List<TagViewModel>>>($"/api/Tag/by-name?name={query}");
-           if(!tags!.DataIsNull)
-                return Ok(tags.Data!.Select(x =>x.Name));
+            if (!tags!.DataIsNull)
+            {                
+                return Ok(tags.Data!.Select(x => new SelectorItem {Text =x.Name,Value =x.Name }));
+               
+            }
 
             return Ok(Enumerable.Empty<string>());
         }

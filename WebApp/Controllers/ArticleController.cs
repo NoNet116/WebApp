@@ -61,7 +61,7 @@ namespace WebApp.Controllers
 
             // Создаем анонимный объект для JSON тела
             var requestBody = new { articleId = id, count = 0 };
-            var comments = await _apiService.PostAsync<CommentViewModel>($"api/Comment/Get", requestBody);
+            var comments = await _apiService.PostAsync<CommentViewModel<int>>($"api/Comment/Get", requestBody);
 
             if (comments != null)
             {
@@ -154,5 +154,7 @@ namespace WebApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+
     }
 }

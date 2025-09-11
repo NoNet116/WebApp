@@ -86,7 +86,22 @@
                             
                                 <div class="comment-footer">
                                     <small>Изменено: @comment.UpdatedAt.ToString("dd.MM.yyyy HH:mm")</small>
-                                </div>
+                                @if (User?.Identity?.IsAuthenticated == true && (User.IsInRole("Administrator") || User.Identity.Name == @comment.Author))
+                                {
+                                    <button type="button"
+                                            class="btn edit-comment"
+                                            onclick="startEditComment('@comment.Id', this)">
+                                        ✏️
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn delete-comment"
+                                            data-id="@comment.Id"
+                                            onclick="deleteComment('@comment.Id', this)">
+                                        🗑️
+                                    </button>
+                                }
+                            </div>
                             
                         </div>
                     }
@@ -121,6 +136,86 @@
         </div>
     </div>
 }
+<script>
+        async function deleteComment(id, btn) {
+        if (!confirm("Вы уверены, что хотите удалить комментарий?")) return;
+
+        const response = await fetch(`/Comment/Delete/${id}`, {
+            method: "POST",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-TOKEN": document.querySelector("input[name='__RequestVerificationToken']")?.value
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // Найдем карточку комментария и удалим
+            const commentCard = btn.closest(".comment-card");
+            if (commentCard) {
+                commentCard.remove();
+            }
+        } else {
+            alert(result.message || "Ошибка при удалении");
+        }
+    }
+    
+    //редактирование комментария
+        function startEditComment(id, btn) {
+        const commentCard = btn.closest(".comment-card");
+        const body = commentCard.querySelector(".comment-body p");
+        const footer = commentCard.querySelector(".comment-footer");
+
+        // Сохраняем старый текст
+        const oldText = body.innerText;
+
+        // Делаем textarea вместо текста
+        body.innerHTML = `
+            <textarea class="form-control edit-textarea">${oldText}</textarea>
+            <div class="mt-2">
+                <button class="btn btn-primary btn-sm" onclick="saveEditComment('${id}', this)">💾 Сохранить</button>
+                <button class="btn btn-secondary btn-sm" onclick="cancelEditComment(this, '${oldText}')">❌ Отмена</button>
+            </div>
+        `;
+
+        // Скрываем кнопки редактирования/удаления на время
+        footer.style.display = "none";
+    }
+
+    async function saveEditComment(id, btn) {
+        const commentCard = btn.closest(".comment-card");
+        const textarea = commentCard.querySelector(".edit-textarea");
+        const newText = textarea.value;
+
+        const response = await fetch(`/Comment/Edit/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-TOKEN": document.querySelector("input[name='__RequestVerificationToken']")?.value
+            },
+            body: `message=${encodeURIComponent(newText)}`
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            commentCard.querySelector(".comment-body").innerHTML = `<p>${result.message}</p>`;
+            commentCard.querySelector(".comment-footer small").innerText = "Изменено: " + result.updatedAt;
+            commentCard.querySelector(".comment-footer").style.display = "block";
+        } else {
+            alert(result.message || "Ошибка при сохранении");
+        }
+    }
+
+    function cancelEditComment(btn, oldText) {
+        const commentCard = btn.closest(".comment-card");
+        commentCard.querySelector(".comment-body").innerHTML = `<p>${oldText}</p>`;
+        commentCard.querySelector(".comment-footer").style.display = "block";
+    }
+
+</script>
 
 <style>
     .article-container {

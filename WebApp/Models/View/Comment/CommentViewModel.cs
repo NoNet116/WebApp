@@ -2,9 +2,9 @@
 
 namespace WebApp.Models.View.Comment
 {
-    public class CommentViewModel
+    public class CommentViewModel<T>
     {
-        public int Id { get; set; }
+        public T Id { get; set; }
         public List<CommentBase> Comments { get; set; } = new List<CommentBase>();
     }
 }

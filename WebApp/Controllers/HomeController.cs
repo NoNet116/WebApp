@@ -92,6 +92,8 @@ namespace WebApp.Controllers
                     TempData["ToastType"] = "error";
                     return View(model);
                 }
+                var user = await loginClient.GetAsync("/api/Users/me");
+                var responseContent2 = await response.Content.ReadAsStringAsync();
 
                 // —охран€ем куки из ответа логина
                 if (response.Headers.TryGetValues("Set-Cookie", out var setCookies))
@@ -113,7 +115,7 @@ namespace WebApp.Controllers
                 }
 
                 // ѕолучаем данные пользовател€ с проверкой на null
-                var userData = JsonSerializer.Deserialize<UserDto>(responseContent, new JsonSerializerOptions
+                var userData = JsonSerializer.Deserialize<UserDto>(responseContent2, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
@@ -123,7 +125,7 @@ namespace WebApp.Controllers
                     // Ѕезопасное создание claims с проверкой на null
                     var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userData.Email ?? model.Email),
+                new Claim(ClaimTypes.Name, userData.UserName ?? model.Email),
                 new Claim(ClaimTypes.NameIdentifier, userData.Id?.ToString() ?? "unknown"),
                 new Claim(ClaimTypes.Role, userData.Role ?? "User")
             };

@@ -1,0 +1,35 @@
+﻿@model WebApp.Models.View.SearchViewModel
+@{
+    var formAction = ViewData["FormAction"]?.ToString() ?? "Search";
+    var formController = ViewData["FormController"]?.ToString() ?? "Home";
+}
+
+<div class="search-form p-3 border rounded shadow-sm">
+    <form asp-action="@formAction" asp-controller="@formController" method="get" class="d-flex flex-column gap-3">
+        <div>
+            <label asp-for="Tag" class="form-label">Тег</label>
+            <input asp-for="Tag" class="form-control" placeholder="Введите тег" />
+        </div>
+
+        <div>
+            <label asp-for="Title" class="form-label">Заголовок</label>
+            <input asp-for="Title" class="form-control" placeholder="Введите заголовок" />
+        </div>
+
+        <div>
+            <label asp-for="Author" class="form-label">Автор</label>
+            <input asp-for="Author" class="form-control" placeholder="Введите автора" />
+        </div>
+
+        <div>
+            <label asp-for="DateTime" class="form-label">Дата</label>
+            <input asp-for="DateTime" type="date" class="form-control"
+                   value="@(Model.DateTime.HasValue? Model.DateTime.Value.ToString("yyyy-MM-dd") : "")" />
+        </div>
+
+        <div class="mt-2">
+            <button type="submit" class="btn btn-primary me-2"> Поиск </button>
+            <button type="reset" class="btn btn-secondary"> Сбросить </button>
+        </div>
+    </form>
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -38,6 +39,9 @@ namespace WebApp.Controllers
         {
             try
             {
+                var users = await _apiService.GetAsync<List<UserProfileDto>>("/api/Users/All");
+                TempData["AdminExist"] = users?.Any(x => x.Role == "Administrator") ?? false;
+
                 var user = await _apiService.GetAsync<UserDto>("/api/Users/me");
 
                 if (user != null)
@@ -56,7 +60,6 @@ namespace WebApp.Controllers
                 TempData["ToastMessage"] = ex.Message;
                 TempData["ToastType"] = "error";
             }
-
             return View();
         }
 
@@ -68,7 +71,6 @@ namespace WebApp.Controllers
             {
                 if (!ModelState.IsValid)
                     return View(model);
-
                 // Создаем временный HttpClient для логина
                 using var loginClient = new HttpClient();
                 loginClient.BaseAddress = new Uri(_apiService.GetBaseUrl());
@@ -303,5 +305,37 @@ namespace WebApp.Controllers
             return View(model);
         }
         #endregion
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdmin()
+        {
+            try
+            {
+                using var client = new HttpClient();
+                client.BaseAddress = new Uri(_apiService.GetBaseUrl());
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("/api/Users/CreateAdministrator", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["Message"] = "Администратор создан успешно";
+                    return Content(responseContent, "application/json");
+                }
+                else
+                {
+                    TempData["Message"] = $"Ошибка: {response.StatusCode}";
+                    return BadRequest(responseContent);
+                }
+            }
+            catch (Exception ex )
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

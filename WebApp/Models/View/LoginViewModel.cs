@@ -11,4 +11,5 @@ public class LoginViewModel
     [Required(ErrorMessage = "Пароль обязателен.")]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
+
 }

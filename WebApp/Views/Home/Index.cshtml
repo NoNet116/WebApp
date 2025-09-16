@@ -2,12 +2,21 @@
 @model LoginViewModel
 @{
     ViewData["Title"] = "Home Page";
+    var adminExist = TempData["AdminExist"] as bool? ?? true;
 }
 @section Style {
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true"/>
 }
 @section _AsideLeft {
     @await Html.PartialAsync("_Login", Model ?? new LoginViewModel())
+    @if (adminExist != true)
+    {
+        <form asp-controller="Home" asp-action="CreateAdmin" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger" style="width:100%">
+                Создать администратора
+            </button>
+        </form>
+    }
 }
 <div class="text-center">
    <h2>Hello world!</h2>

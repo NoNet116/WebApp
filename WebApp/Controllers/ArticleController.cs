@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Security.Claims;
 using WebApp.Models;
 using WebApp.Models.View;
@@ -194,10 +193,8 @@ namespace WebApp.Controllers
                 result = result.Where(x => x.CreatedAt.Date == model.DateTime.Value.Date);
             }
 
-
             return View("Index", result.ToList());
         }
-
 
     }
 }

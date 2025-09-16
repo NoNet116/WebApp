@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Claims;
 using WebApp.Models;
+using WebApp.Models.View;
 using WebApp.Models.View.Article;
 using WebApp.Models.View.Comment;
 using WebApp.Services;
@@ -153,6 +155,47 @@ namespace WebApp.Controllers
             var result = await _apiService.DeleteAsync($"/api/Article/{id}");
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(SearchViewModel model)
+        {
+            var articles = await _apiService.GetAsync<List<ArticleViewModel>>($"/api/Article");
+            if(articles == null)
+            {
+                return View("Index");
+            }
+
+            IEnumerable<ArticleViewModel> result = articles;
+
+            if (!string.IsNullOrEmpty(model.Author))
+            {
+                result = result.Where(x =>
+                    !string.IsNullOrEmpty(x.AuthorName) &&
+                    x.AuthorName.Contains(model.Author, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrEmpty(model.Title))
+            {
+                result = result.Where(x =>
+                    !string.IsNullOrEmpty(x.Title) &&
+                    x.Title.Contains(model.Title, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrEmpty(model.Tag))
+            {
+                result = result.Where(x =>
+                    x.Tags != null &&
+                    x.Tags.Any(t => t.Contains(model.Tag, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            if (model.DateTime.HasValue)
+            {
+                result = result.Where(x => x.CreatedAt.Date == model.DateTime.Value.Date);
+            }
+
+
+            return View("Index", result.ToList());
         }
 
 

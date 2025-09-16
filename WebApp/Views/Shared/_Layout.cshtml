@@ -26,7 +26,10 @@
             }
             else
             {
-                <partial name="_DefaultLeftMenu" />
+                @if (User?.Identity?.IsAuthenticated == true)
+                { 
+                    <partial name="_DefaultLeftMenu" />
+                }
             }
         </aside>
 

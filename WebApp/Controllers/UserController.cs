@@ -17,6 +17,9 @@ namespace WebApp.Controllers
             try
             {
                 var users = await _apiService.GetAsync<List<UserProfileDto>>("/api/Users/All");
+                
+                if(users ==null)
+                    return View();
 
                 // Маппим в UserViewModel
                 var viewModel = users.Select(x => new UserViewModel

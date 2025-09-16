@@ -11,31 +11,38 @@ public class ApiService
     private readonly string _apiUrl;
     private readonly CookieContainer _cookieContainer;
 
-    public ApiService(HttpClient httpClient,
-                     IHttpContextAccessor httpContextAccessor,
-                     IConfiguration config)
+    public ApiService(IHttpContextAccessor httpContextAccessor, IConfiguration config)
     {
-        _httpClient = httpClient;
-        _httpContextAccessor = httpContextAccessor;
-        _apiUrl = config["API:url"] ?? throw new ArgumentNullException(nameof(_apiUrl));
+        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        _apiUrl = config["API:url"] ?? throw new ArgumentNullException("API:url");
+
         _cookieContainer = new CookieContainer();
 
-        // Настраиваем HttpClient
-        _httpClient.BaseAddress = new Uri(_apiUrl);
+        var handler = new HttpClientHandler
+        {
+            CookieContainer = _cookieContainer,
+            UseCookies = true,
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+        };
+
+        _httpClient = new HttpClient(handler)
+        {
+            BaseAddress = new Uri(_apiUrl)
+        };
         _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
     }
 
     public async Task<T?> GetAsync<T>(string endpoint)
     {
-        await AddCookiesToRequest();
+        AddCookiesFromCurrentContext();
         var response = await _httpClient.GetAsync(endpoint);
-        await SaveCookiesFromResponse(response);
+        SaveCookiesToContext();
         return await HandleResponse<T>(response);
     }
 
     public async Task<T?> PostAsync<T>(string endpoint, object? payload)
     {
-        await AddCookiesToRequest();
+        AddCookiesFromCurrentContext();
 
         HttpContent? content = null;
         if (payload != null)
@@ -45,13 +52,13 @@ public class ApiService
         }
 
         var response = await _httpClient.PostAsync(endpoint, content);
-        await SaveCookiesFromResponse(response);
+        SaveCookiesToContext();
         return await HandleResponse<T>(response);
     }
 
     public async Task<T?> PutAsync<T>(string endpoint, object? payload)
     {
-        await AddCookiesToRequest();
+        AddCookiesFromCurrentContext();
 
         HttpContent? content = null;
         if (payload != null)
@@ -61,67 +68,51 @@ public class ApiService
         }
 
         var response = await _httpClient.PutAsync(endpoint, content);
-        await SaveCookiesFromResponse(response);
+        SaveCookiesToContext();
         return await HandleResponse<T>(response);
     }
 
     public async Task<bool> DeleteAsync(string endpoint)
     {
-        await AddCookiesToRequest();
+        AddCookiesFromCurrentContext();
         var response = await _httpClient.DeleteAsync(endpoint);
-        await SaveCookiesFromResponse(response);
+        SaveCookiesToContext();
         response.EnsureSuccessStatusCode();
         return true;
     }
 
-    private async Task AddCookiesToRequest()
+    public string GetBaseUrl() => _apiUrl;
+
+    #region Private Helpers
+
+    private void AddCookiesFromCurrentContext()
     {
-        var currentContext = _httpContextAccessor.HttpContext;
-        if (currentContext == null) return;
+        var context = _httpContextAccessor.HttpContext;
+        if (context == null) return;
 
-        // Очищаем предыдущие куки
-        _httpClient.DefaultRequestHeaders.Remove("Cookie");
-
-        // Добавляем куки из текущего запроса
-        var cookies = currentContext.Request.Cookies;
-        if (cookies.Any())
+        foreach (var cookie in context.Request.Cookies)
         {
-            var cookieHeader = string.Join("; ", cookies.Select(c => $"{c.Key}={c.Value}"));
-            _httpClient.DefaultRequestHeaders.Add("Cookie", cookieHeader);
+            _cookieContainer.Add(new Uri(_apiUrl), new Cookie(cookie.Key, cookie.Value));
         }
     }
 
-    private async Task SaveCookiesFromResponse(HttpResponseMessage response)
+    private void SaveCookiesToContext()
     {
-        var currentContext = _httpContextAccessor.HttpContext;
-        if (currentContext == null) return;
+        var context = _httpContextAccessor.HttpContext;
+        if (context == null) return;
 
-        // Сохраняем куки из ответа API
-        if (response.Headers.TryGetValues("Set-Cookie", out var setCookies))
+        var cookies = _cookieContainer.GetCookies(new Uri(_apiUrl)).Cast<Cookie>();
+        foreach (var cookie in cookies)
         {
-            foreach (var setCookie in setCookies)
+            context.Response.Cookies.Append(cookie.Name, cookie.Value, new CookieOptions
             {
-                // Парсим куки и сохраняем в текущий контекст
-                var cookieParts = setCookie.Split(';')[0].Split('=');
-                if (cookieParts.Length == 2)
-                {
-                    currentContext.Response.Cookies.Append(cookieParts[0], cookieParts[1], new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTimeOffset.Now.AddHours(2)
-                    });
-                }
-            }
+                HttpOnly = cookie.HttpOnly,
+                Secure = cookie.Secure,
+                SameSite = SameSiteMode.Strict,
+                Expires = cookie.Expires == DateTime.MinValue ? null : cookie.Expires
+            });
         }
     }
-
-    public string GetBaseUrl()
-    {
-        return _apiUrl;
-    }
-
 
     private async Task<T?> HandleResponse<T>(HttpResponseMessage response)
     {
@@ -130,9 +121,7 @@ public class ApiService
         if (!response.IsSuccessStatusCode)
         {
             throw new HttpRequestException(
-                $"API StatusCode: {response.StatusCode}. " +
-                $"Ответ сервера: {responseContent}"
-            );
+                $"API StatusCode: {response.StatusCode}. Ответ сервера: {responseContent}");
         }
 
         return string.IsNullOrWhiteSpace(responseContent)
@@ -142,4 +131,6 @@ public class ApiService
                 PropertyNameCaseInsensitive = true
             });
     }
+
+    #endregion
 }

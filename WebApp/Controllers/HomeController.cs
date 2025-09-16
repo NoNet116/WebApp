@@ -66,105 +66,47 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(LoginViewModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
+
             try
             {
-                if (!ModelState.IsValid)
-                    return View(model);
-                // Создаем временный HttpClient для логина
-                using var loginClient = new HttpClient();
-                loginClient.BaseAddress = new Uri(_apiService.GetBaseUrl());
-                loginClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                // Отправляем логин
+                var loginPayload = new { email = model.Email, password = model.Password };
+                await _apiService.PostAsync<object>("/api/auth/login", loginPayload);
 
-                var loginData = new
+                //Получаем данные текущего пользователя
+                var user = await _apiService.GetAsync<UserProfileDto>("/api/Users/me");
+                if (user == null)
                 {
-                    email = model.Email,
-                    password = model.Password
-                };
-
-                var json = JsonSerializer.Serialize(loginData);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await loginClient.PostAsync("/api/auth/login", content);
-                var responseContent = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    TempData["ToastMessage"] = "Неверный логин или пароль.";
+                    TempData["ToastMessage"] = "Не удалось получить данные пользователя.";
                     TempData["ToastType"] = "error";
                     return View(model);
                 }
-                var user = await loginClient.GetAsync("/api/Users/me");
-                var responseContent2 = await response.Content.ReadAsStringAsync();
 
-                // Сохраняем куки из ответа логина
-                if (response.Headers.TryGetValues("Set-Cookie", out var setCookies))
-                {
-                    foreach (var setCookie in setCookies)
-                    {
-                        var cookieParts = setCookie.Split(';')[0].Split('=');
-                        if (cookieParts.Length == 2)
-                        {
-                            Response.Cookies.Append(cookieParts[0], cookieParts[1], new CookieOptions
-                            {
-                                HttpOnly = true,
-                                Secure = true,
-                                SameSite = SameSiteMode.Strict,
-                                Expires = DateTimeOffset.Now.AddHours(2)
-                            });
-                        }
-                    }
-                }
-
-                // Получаем данные пользователя с проверкой на null
-                var userData = JsonSerializer.Deserialize<UserDto>(responseContent2, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-                if (userData != null)
-                {
-                    // Безопасное создание claims с проверкой на null
-                    var claims = new List<Claim>
+                //Создаём Claims
+                var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userData.UserName ?? model.Email),
-                new Claim(ClaimTypes.NameIdentifier, userData.Id?.ToString() ?? "unknown"),
-                new Claim(ClaimTypes.Role, userData.Role ?? "User")
+                new Claim(ClaimTypes.Name, user.UserName ?? user.Email), // User.Identity.Name
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role ?? "User")
             };
 
-                    // Добавляем только те claims, которые имеют значения
-                    if (!string.IsNullOrEmpty(userData.Email))
-                        claims.Add(new Claim(ClaimTypes.Email, userData.Email));
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
 
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                //Авторизуем пользователя в ASP.NET Core
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        new AuthenticationProperties
-                        {
-                            IsPersistent = true,
-                            ExpiresUtc = DateTime.UtcNow.AddHours(2)
-                        });
+                TempData["ToastMessage"] = $"Привет, {user.UserName ?? user.Email}!";
+                TempData["ToastType"] = "success";
 
-                    // Сохраняем информацию в сессии для дополнительной безопасности
-                    HttpContext.Session.SetString("UserEmail", userData.Email ?? "");
-                    HttpContext.Session.SetString("UserId", userData.Id?.ToString() ?? "");
-                    HttpContext.Session.SetString("UserRole", userData.Role ?? "");
-
-                    TempData["ToastMessage"] = "Успешный вход!";
-                    TempData["ToastType"] = "success";
-                    return RedirectToAction("Index", "Home");
-                }
-
-                TempData["ToastMessage"] = "Ошибка при обработке данных пользователя.";
-                TempData["ToastType"] = "error";
-                return View(model);
+                return RedirectToAction("Index", "Home");
             }
-            catch (Exception ex)
+            catch (HttpRequestException)
             {
-                TempData["ToastMessage"] = $"Ошибка: {ex.Message}";
+                TempData["ToastMessage"] = "Неверный логин или пароль.";
                 TempData["ToastType"] = "error";
-                ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
         }
@@ -340,6 +282,12 @@ namespace WebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
 
     }
 }

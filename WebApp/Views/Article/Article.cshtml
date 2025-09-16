@@ -1,8 +1,5 @@
 ﻿@using WebApp.Models.View.Article
 @model ArticleViewModel
-@section Scripts {
-    <script src="~/js/Selector.js" asp-append-version="true"></script>
-}
 
 @section _AsideRight {
     @if (User?.Identity?.IsAuthenticated == true && (User.IsInRole("Administrator") || User.Identity.Name == Model.AuthorName))

@@ -195,6 +195,5 @@ namespace WebApp.Controllers
 
             return View("Index", result.ToList());
         }
-
     }
 }

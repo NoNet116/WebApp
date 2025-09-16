@@ -336,5 +336,10 @@ namespace WebApp.Controllers
             }
         }
 
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
+
     }
 }

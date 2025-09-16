@@ -6,7 +6,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator,Moderator")]
     public class UserController(ILogger<UserController> logger, ApiService apiService) : Controller
     {
         private readonly ILogger<UserController> _logger = logger;
@@ -50,7 +50,7 @@ namespace WebApp.Controllers
             }
         }
 
-        [HttpPost, Authorize(Roles = "Administrator,Moderator")]
+        [HttpPost]
         public async Task<IActionResult> Edit(Guid id, [FromBody] Dictionary<string, string> updatedData)
         {
             try

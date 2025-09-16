@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Home/Logout";
 
         // ѕуть дл€ перенаправлени€ при отказе в доступе (403 Forbidden)
-        options.AccessDeniedPath = "/Home/Index";
+        options.AccessDeniedPath = "/Home/Forbidden";
 
         // «апрещает доступ к куки через JavaScript (защита от XSS-атак)
         options.Cookie.HttpOnly = true;

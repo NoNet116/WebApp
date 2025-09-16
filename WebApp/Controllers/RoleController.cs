@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Models.View.Role;
 using WebApp.Models.View.Role.Base;
@@ -6,6 +7,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class RoleController(ILogger<RoleController> logger, ApiService apiService) : Controller
     {
         private readonly ILogger<RoleController> _logger = logger;

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using WebApp.Models;
 using WebApp.Models.View;
+using WebApp.Models.View.Role.Base;
 using WebApp.Models.View.User;
 using WebApp.Services;
 
@@ -62,6 +63,7 @@ namespace WebApp.Controllers
             return View();
         }
 
+        
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Index(LoginViewModel model)
@@ -72,11 +74,13 @@ namespace WebApp.Controllers
             try
             {
                 // Отправляем логин
+               
                 var loginPayload = new { email = model.Email, password = model.Password };
-                await _apiService.PostAsync<object>("/api/auth/login", loginPayload);
+
+                var user = await _apiService.PostAsync<LoginResponse>("/api/auth/login", loginPayload);
 
                 //Получаем данные текущего пользователя
-                var user = await _apiService.GetAsync<UserProfileDto>("/api/Users/me");
+                //var user = await _apiService.GetAsync<UserProfileDto>("/api/Users/me");
                 if (user == null)
                 {
                     TempData["ToastMessage"] = "Не удалось получить данные пользователя.";

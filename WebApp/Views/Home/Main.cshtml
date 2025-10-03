@@ -1,9 +1,9 @@
 ﻿@using WebApp.Models.View.User
 @model UserViewModel
-@*
-
-*@
-@{
+@section _AsideRight {
+    <form asp-area="Identity" asp-controller="Home" asp-action="Crash">
+        <button type="submit" class="btn btn-danger" style="width:100%">Призвать ошибку</button>
+    </form>
 }
 <div>
     <ul>

@@ -16,6 +16,7 @@ namespace WebApp.Controllers
     
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("{Name}: Главная страница тегов", User.Identity?.Name);
             var tags = await _apiService.GetAsync<List<TagViewModel>>($"/api/Tag");
             return View(tags);
         }

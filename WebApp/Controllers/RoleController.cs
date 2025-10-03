@@ -17,6 +17,8 @@ namespace WebApp.Controllers
         {
             try
             {
+                _logger.LogInformation("{Name}: Главная страница ролей", User.Identity?.Name);
+
                 var rolesdto = await _apiService.GetAsync<List<RoleDto>>("/api/Roles/All");
                 if (rolesdto == null)
                 {

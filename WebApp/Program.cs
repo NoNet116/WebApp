@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Services;
+using NLog;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +38,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.HttpOnly = true;
 
         // Ограничивает отправку куки только для запросов с того же сайта
-        // Strict - куки не отправляются при переходе по ссылкам с других сайтов
         options.Cookie.SameSite = SameSiteMode.Strict;
 
         // Куки будут отправляться только по HTTPS (обязательно для production)
@@ -50,11 +51,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
 
         // Дополнительные полезные опции (можно добавить):
-
-        // options.Cookie.Name = "MyApp.Auth"; // Уникальное имя куки для приложения
-        // options.Cookie.Domain = "example.com"; // Домен, для которого действительна куки
-        // options.Cookie.Path = "/"; // Путь, для которого действительна куки
-        // options.Events // Обработчики событий аутентификации
+        // options.Cookie.Name = "MyApp.Auth";
+        // options.Cookie.Domain = "example.com";
+        // options.Cookie.Path = "/";
     });
 
 // Настройка авторизации
@@ -75,13 +74,25 @@ builder.Services.AddSession(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+// Настройка NLog
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+
 var app = builder.Build();
 
 // Middleware
 if (!app.Environment.IsDevelopment())
 {
+    // Глобальный обработчик ошибок (production)
     app.UseExceptionHandler("/Home/Error");
+
+    // Включаем HSTS (HTTP Strict Transport Security)
     app.UseHsts();
+}
+else
+{
+    // В режиме разработки можно включить страницу с подробной информацией об ошибке
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -92,6 +103,25 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Глобальный middleware для перехвата непредвиденных исключений
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next.Invoke();
+    }
+    catch (Exception ex)
+    {
+        // Логируем непредвиденные ошибки
+        var logger = LogManager.GetCurrentClassLogger();
+        logger.Error(ex, "Произошло необработанное исключение");
+
+        // Перенаправляем пользователя на страницу
+        context.Response.Redirect("/Home/ErrorPage");
+    }
+});
+
+// Маршрутизация контроллеров
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

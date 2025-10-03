@@ -1,0 +1,363 @@
+2025-10-02 13:23:10.8811 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:23:10.8905 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:23:10.9391 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:23:10.9391 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:23:10.9391 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:23:10.9523 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:23:10.9523 Info AutoReload Config File Monitor starting
+2025-10-02 13:23:10.9832 Info Configuration initialized.
+2025-10-02 13:24:01.7490 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:24:01.7622 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:24:01.8046 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:24:01.8084 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:24:01.8084 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:24:01.8084 Info AutoReload Config File Monitor starting
+2025-10-02 13:24:01.8507 Info Configuration initialized.
+2025-10-02 13:29:04.6997 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:29:04.7090 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:29:04.7521 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:29:04.7521 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:29:04.7521 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:29:04.7640 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:29:04.7640 Info AutoReload Config File Monitor starting
+2025-10-02 13:29:04.7946 Info Configuration initialized.
+2025-10-02 13:33:48.6529 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:33:48.6638 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:33:48.7028 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:33:48.7028 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:33:48.7028 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:33:48.7028 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:33:48.7190 Info AutoReload Config File Monitor starting
+2025-10-02 13:33:48.7494 Info Configuration initialized.
+2025-10-02 13:36:14.2426 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:36:14.2577 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:36:14.2948 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:36:14.2986 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:36:14.2986 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:36:14.2986 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:36:14.2986 Info AutoReload Config File Monitor starting
+2025-10-02 13:36:14.3349 Info Configuration initialized.
+2025-10-02 13:51:55.3587 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:51:55.3679 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:51:55.4138 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:51:55.4138 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:51:55.4138 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:51:55.4138 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:51:55.4313 Info AutoReload Config File Monitor starting
+2025-10-02 13:51:55.4643 Info Configuration initialized.
+2025-10-02 13:51:55.4904 Warn Logger: Microsoft.Extensions.Hosting.Internal.ApplicationLifetime configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.4904 Warn Logger: Microsoft.Extensions.Hosting.Internal.Host configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.4904 Warn Logger: Microsoft.Hosting.Lifetime configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5249 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5249 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5249 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Core.Internal.CertificatePathWatcher configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5249 Warn Logger: Microsoft.AspNetCore.Server.Kestrel configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5249 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.BadRequests configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5249 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Connections configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5372 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Http2 configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5372 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Http3 configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5372 Warn Logger: WebApp configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.5755 Warn Logger: Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6414 Warn Logger: Microsoft.AspNetCore.Mvc.Core.Filters.AntiforgeryMiddlewareAuthorizationFilter configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6414 Warn Logger: Microsoft.AspNetCore.Mvc.Razor.Compilation.DefaultViewCompiler configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6544 Warn Logger: Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6544 Warn Logger: Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6544 Warn Logger: Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderFactory configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6639 Warn Logger: Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.6639 Warn Logger: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.7913 Warn Logger: Microsoft.AspNetCore.DataProtection.TypeForwardingActivator configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8062 Warn Logger: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8062 Warn Logger: Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.CngGcmAuthenticatedEncryptorFactory configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8062 Warn Logger: Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.CngCbcAuthenticatedEncryptorFactory configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8062 Warn Logger: Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ManagedAuthenticatedEncryptorFactory configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8203 Warn Logger: Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlEncryptor configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8203 Warn Logger: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8687 Warn Logger: Microsoft.AspNetCore.DataProtection.KeyManagement.DefaultKeyResolver configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8687 Warn Logger: Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingProvider configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8805 Warn Logger: Microsoft.AspNetCore.DataProtection.Internal.DataProtectionHostedService configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.8805 Warn Logger: Microsoft.AspNetCore.Hosting.Diagnostics configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9150 Warn Logger: Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9289 Warn Logger: Microsoft.AspNetCore.Watch.BrowserRefresh.BlazorWasmHotReloadMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9289 Warn Logger: Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserScriptMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9719 Warn Logger: Microsoft.AspNetCore.Routing.EndpointMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9719 Warn Logger: Microsoft.AspNetCore.Authorization.AuthorizationMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9866 Warn Logger: Microsoft.AspNetCore.DataProtection.KeyManagement.KeyRingBasedDataProtector configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9866 Warn Logger: Microsoft.Extensions.Caching.Memory.MemoryCache configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9907 Warn Logger: Microsoft.AspNetCore.Session.SessionMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9907 Warn Logger: Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9907 Warn Logger: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:55.9907 Warn Logger: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.0120 Warn Logger: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.0120 Warn Logger: Microsoft.AspNetCore.HostFiltering.HostFilteringMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.0120 Warn Logger: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.0224 Warn Logger: Microsoft.WebTools.BrowserLink.Net.VsContentMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.0224 Warn Logger: Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.1155 Warn Logger: Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:56.1618 Warn Logger: Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollectionProvider configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:57.5270 Warn Logger: Microsoft.AspNetCore.Routing.Matching.DfaMatcher configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:57.5270 Warn Logger: Microsoft.AspNetCore.Session.DistributedSession configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:57.5450 Warn Logger: Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:57.5557 Warn Logger: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:57.5557 Warn Logger: Microsoft.AspNetCore.Mvc.ViewFeatures.CookieTempDataProvider configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:57.6116 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:58.9160 Warn Logger: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:58.9508 Warn Logger: Microsoft.AspNetCore.Routing.DefaultLinkGenerator configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:58.9508 Warn Logger: Microsoft.AspNetCore.Mvc.ViewComponents.DefaultViewComponentInvoker configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:58.9589 Warn Logger: Microsoft.AspNetCore.Antiforgery.DefaultAntiforgery configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:58.9789 Warn Logger: Microsoft.AspNetCore.Mvc.Razor.TagHelpers.HeadTagHelper configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:51:59.0111 Warn Logger: Microsoft.AspNetCore.Mvc.Razor.TagHelpers.BodyTagHelper configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:52:05.4516 Warn Logger: Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinder configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:52:05.4516 Warn Logger: Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinder configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:52:05.8731 Warn Logger: Microsoft.AspNetCore.Mvc.RedirectToActionResult configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='*' and Level=Warn has been skipped.
+2025-10-02 13:53:28.7848 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-02 13:53:28.7940 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:53:28.8345 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-02 13:53:28.8345 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-02 13:53:28.8345 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-02 13:53:28.8345 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-02 13:53:28.8513 Info AutoReload Config File Monitor starting
+2025-10-02 13:53:28.8829 Info Configuration initialized.
+2025-10-03 11:51:27.5484 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 11:51:27.5571 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 11:51:27.6053 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 11:51:27.6053 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 11:51:27.6053 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 11:51:27.6194 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 11:51:27.6194 Info AutoReload Config File Monitor starting
+2025-10-03 11:51:27.6544 Info Configuration initialized.
+2025-10-03 11:59:02.0733 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 11:59:02.0810 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 11:59:02.0951 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 11:59:02.0951 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 11:59:02.0951 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 11:59:02.0951 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 11:59:02.1093 Info AutoReload Config File Monitor starting
+2025-10-03 11:59:02.1313 Info Configuration initialized.
+2025-10-03 14:30:12.5710 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:30:12.5818 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:30:12.6266 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:30:12.6266 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:30:12.6266 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:30:12.6401 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 14:30:12.6401 Info AutoReload Config File Monitor starting
+2025-10-03 14:30:12.6707 Info Configuration initialized.
+2025-10-03 14:30:26.4417 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:30:26.4417 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:30:26.4628 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:30:26.4628 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:30:26.4667 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:30:26.4667 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 14:30:26.4667 Info AutoReload Config File Monitor starting
+2025-10-03 14:30:26.5007 Info Configuration initialized.
+2025-10-03 14:36:19.4801 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:36:19.4871 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:36:19.5009 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:36:19.5009 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:36:19.5009 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:36:19.5009 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 14:36:19.5009 Info AutoReload Config File Monitor starting
+2025-10-03 14:36:19.5372 Info Configuration initialized.
+2025-10-03 14:40:29.2078 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:40:29.2078 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:40:29.2286 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:40:29.2286 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:40:29.2286 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:40:29.2383 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 14:40:29.2383 Info AutoReload Config File Monitor starting
+2025-10-03 14:40:29.2681 Info Configuration initialized.
+2025-10-03 14:41:40.5340 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:41:40.5340 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:41:40.5558 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:41:40.5558 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:41:40.5558 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:41:40.5655 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 14:41:40.5655 Info AutoReload Config File Monitor starting
+2025-10-03 14:41:40.5949 Info Configuration initialized.
+2025-10-03 14:49:46.9761 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:49:46.9761 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:49:46.9972 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:49:46.9972 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:49:47.0010 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:49:47.0010 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 14:49:47.0010 Info AutoReload Config File Monitor starting
+2025-10-03 14:49:47.0331 Info Configuration initialized.
+2025-10-03 14:53:17.8781 Info AutoReload Config File Monitor reloading configuration...
+2025-10-03 14:53:17.9077 Info Loading NLog config from XML file: C:\Develop\WebApp\WebApp\nlog.config
+2025-10-03 14:53:17.9077 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 14:53:17.9077 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:53:17.9077 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 14:53:17.9077 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 14:53:17.9077 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 14:53:17.9077 Info Closing old configuration.
+2025-10-03 14:53:17.9077 Info AutoReload Config File Monitor stopping, since no active configuration
+2025-10-03 14:53:17.9242 Info AutoReload Config File Monitor starting
+2025-10-03 14:53:17.9242 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 14:53:17.9242 Info Configuration initialized.
+2025-10-03 14:54:05.2824 Warn Logger: WebApp.Program configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:10:14.1017 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 15:10:14.1017 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:10:14.1248 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 15:10:14.1248 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:10:14.1248 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 15:10:14.1354 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 15:10:14.1354 Info AutoReload Config File Monitor starting
+2025-10-03 15:10:14.1620 Info Configuration initialized.
+2025-10-03 15:10:15.6155 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:10:49.2300 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 15:10:49.2401 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:10:49.2401 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 15:10:49.2568 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:10:49.2568 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 15:10:49.2568 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 15:10:49.2568 Info AutoReload Config File Monitor starting
+2025-10-03 15:10:49.2945 Info Configuration initialized.
+2025-10-03 15:10:50.3880 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:14:10.2821 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 15:14:10.2898 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:14:10.3046 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 15:14:10.3046 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:14:10.3046 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 15:14:10.3183 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 15:14:10.3183 Info AutoReload Config File Monitor starting
+2025-10-03 15:14:10.3532 Info Configuration initialized.
+2025-10-03 15:14:11.2554 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:14:43.0611 Warn Logger: WebApp.Controllers.ArticleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:32:25.1573 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 15:32:25.1662 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:32:25.1662 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 15:32:25.1818 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:32:25.1818 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 15:32:25.1818 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 15:32:25.1818 Info AutoReload Config File Monitor starting
+2025-10-03 15:32:25.2161 Info Configuration initialized.
+2025-10-03 15:32:26.8310 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:32:44.4756 Warn Logger: WebApp.Controllers.ArticleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:32:48.5925 Warn Logger: WebApp.Controllers.TagController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:33:04.3087 Warn Logger: WebApp.Controllers.RoleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:33:09.6829 Warn Logger: WebApp.Controllers.UserController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:36:43.6184 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 15:36:43.6277 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:36:43.6734 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 15:36:43.6734 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:36:43.6734 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 15:36:43.6869 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 15:36:43.6869 Info AutoReload Config File Monitor starting
+2025-10-03 15:36:43.7215 Info Configuration initialized.
+2025-10-03 15:36:45.6258 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:36:53.3872 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 15:36:53.3872 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:36:53.4099 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 15:36:53.4099 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 15:36:53.4099 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 15:36:53.4211 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 15:36:53.4211 Info AutoReload Config File Monitor starting
+2025-10-03 15:36:53.4514 Info Configuration initialized.
+2025-10-03 15:36:54.5462 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:37:09.2199 Warn Logger: WebApp.Controllers.ArticleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:37:13.0921 Warn Logger: WebApp.Controllers.TagController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:37:20.4975 Warn Logger: WebApp.Controllers.RoleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 15:37:28.7516 Warn Logger: WebApp.Controllers.UserController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:19:44.6058 Warn Logger: WebApp.Program configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:24:57.1897 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 16:24:57.1985 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 16:24:57.2389 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 16:24:57.2389 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 16:24:57.2434 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 16:24:57.2434 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 16:24:57.2434 Info AutoReload Config File Monitor starting
+2025-10-03 16:24:57.2793 Info Configuration initialized.
+2025-10-03 16:24:59.1682 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:26:30.7806 Warn Logger: WebApp.Controllers.ArticleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:26:33.6359 Warn Logger: WebApp.Controllers.TagController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:38:42.0138 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 16:38:42.0335 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 16:38:42.0470 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 16:38:42.0470 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 16:38:42.0470 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 16:38:42.0607 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 16:38:42.0607 Info AutoReload Config File Monitor starting
+2025-10-03 16:38:42.0859 Info Configuration initialized.
+2025-10-03 16:38:43.6095 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:39:41.2353 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 16:39:41.2353 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 16:39:41.2583 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 16:39:41.2583 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 16:39:41.2583 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 16:39:41.2679 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 16:39:41.2679 Info AutoReload Config File Monitor starting
+2025-10-03 16:39:41.2976 Info Configuration initialized.
+2025-10-03 16:39:42.7086 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 16:39:55.7964 Warn Logger: WebApp.Program configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 17:01:37.1308 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 17:01:37.1308 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 17:01:37.1527 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 17:01:37.1527 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 17:01:37.1527 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 17:01:37.1624 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 17:01:37.1624 Info AutoReload Config File Monitor starting
+2025-10-03 17:01:37.1929 Info Configuration initialized.
+2025-10-03 17:01:38.6806 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 17:02:09.2734 Warn Logger: WebApp.Controllers.ArticleController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 17:02:17.5366 Warn Logger: WebApp.Controllers.TagController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.
+2025-10-03 17:12:38.7227 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2025-10-03 17:12:38.7298 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'filter'='level >= LogLevel.Error'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 17:12:38.7298 Info Registered target NLog.Targets.FileTarget(Name=errorfile)
+2025-10-03 17:12:38.7467 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'ColoredConsoleTarget' cannot assign unknown property 'filter'='level >= LogLevel.Warn'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2025-10-03 17:12:38.7467 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=console)
+2025-10-03 17:12:38.7467 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.0.4.4534. Product version: 6.0.4+0f63723442db07c29eb838b0bce8b5633031a04e. GlobalAssemblyCache: False
+2025-10-03 17:12:38.7467 Info AutoReload Config File Monitor starting
+2025-10-03 17:12:38.7795 Info Configuration initialized.
+2025-10-03 17:12:40.2238 Warn Logger: WebApp.Controllers.HomeController configured with duplicate output to target: ColoredConsoleTarget(Name=console). LoggingRule with NamePattern='WebApp.*' and Level=Error has been skipped.

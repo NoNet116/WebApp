@@ -16,6 +16,7 @@ namespace WebApp.Controllers
         {
             try
             {
+                _logger.LogInformation("{Name}: Главная страница пользователей", User.Identity?.Name);
                 var users = await _apiService.GetAsync<List<UserProfileDto>>("/api/Users/All");
                 
                 if(users ==null)

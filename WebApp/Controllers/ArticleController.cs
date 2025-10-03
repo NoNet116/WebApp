@@ -18,6 +18,7 @@ namespace WebApp.Controllers
         {
             try
             {
+                _logger.LogInformation("{Name}: Главная страница статьи", User.Identity?.Name);
                 var articles = await _apiService.GetAsync<List<ArticleViewModel>>($"/api/Article/{startIndex}/{count}");
 
                 return View(articles);

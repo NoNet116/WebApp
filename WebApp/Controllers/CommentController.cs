@@ -25,7 +25,7 @@ namespace WebApp.Controllers
             var result = await _apiService.DeleteAsync($"api/Comment/{id}");
 
             //обновить страницу
-           // return Redirect(Request.Headers["Referer"].ToString());
+            //return Redirect(Request.Headers["Referer"].ToString());
 
             if (result)
                 return Json(new { success = true, id });
